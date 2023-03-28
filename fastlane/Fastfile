@@ -14,7 +14,7 @@ lane :build do
     )
   end
 
-  current_build_number = get_build_number(xcodeproj: "CI-CD-Test.xcodeproj") + 1
+  increment_build_number
 
   versionNumber = get_version_number(xcodeproj: "CI-CD-Test.xcodeproj")
   buildNumber = get_build_number(xcodeproj: "CI-CD-Test.xcodeproj")
