@@ -14,15 +14,13 @@ lane :build do
     )
   end
 
-  increment_build_number
+  increment_build_number_in_plist(
+    build_number: get_build_number(xcodeproj: "CI-CD-Test.xcodeproj") + 1
+  )
 
   versionNumber = get_version_number(xcodeproj: "CI-CD-Test.xcodeproj")
   buildNumber = get_build_number(xcodeproj: "CI-CD-Test.xcodeproj")
   release_upload_name = "#{versionNumber} (#{buildNumber})"
-
-  increment_build_number_in_plist(
-    build_number: current_build_number
-  )
 
   gym(
     export_method: "app-store",
