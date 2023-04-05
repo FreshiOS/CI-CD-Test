@@ -27,7 +27,6 @@ lane :build do
     api_token: ENV["GIT_TOKEN"],
     tag_name: "#{ENV["TAG"]}-notAll",
     description: "디스크립션",
-    upload_assets: ["../Archives/"]
    )
 
 end
