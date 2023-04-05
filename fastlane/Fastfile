@@ -25,7 +25,7 @@ lane :build do
     repository_name: "sello-lee/CI-CD-Test",
     name: release_upload_name,
     api_token: ENV["GIT_TOKEN"],
-    tag_name: "QA - #{{ENV["TAG"]}",
+    tag_name: "QA - #{ENV["TAG"]}",
     description: "디스크립션",
    )
 
