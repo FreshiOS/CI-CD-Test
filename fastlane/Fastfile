@@ -26,7 +26,7 @@ lane :build do
     name: release_upload_name,
     api_token: ENV["GIT_TOKEN"],
     tag_name: "#{ENV["TAG"]}-notAll",
-    description: changelog,
+    description: "디스크립션",
     upload_assets: ["../Archives/"]
    )
 
