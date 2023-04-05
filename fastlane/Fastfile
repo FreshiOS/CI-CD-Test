@@ -4,7 +4,7 @@ lane :build do
 
   version = get_version_number(xcodeproj: "CI-CD-Test.xcodeproj")
   newVersion = ENV["TAG"].split('v')[1].split('-')[0].strip
-  release_tag_name = ENV["TAG"]
+  release_tag_name = "#{ENV["TAG"]}"
 
   if version != newVersion 
     increment_version_number_in_plist(
