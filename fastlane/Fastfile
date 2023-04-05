@@ -31,7 +31,7 @@ lane :build do
     repository_name: "sello-lee/CI-CD-Test",
     name: release_upload_name,
     api_token: ENV["GIT_TOKEN"],
-    tag_name: ENV["TAG"],
+    tag_name: "#{ENV["TAG"]}-notAll",
     description: changelog,
     upload_assets: ["../Archives/"]
    )
