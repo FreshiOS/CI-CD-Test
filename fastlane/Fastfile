@@ -4,6 +4,7 @@ lane :build do
 
   version = get_version_number(xcodeproj: "CI-CD-Test.xcodeproj")
   newVersion = ENV["TAG"].split('v')[1].split('-')[0].strip
+  release_tag_name = ENV["TAG"]
 
   if version != newVersion 
     increment_version_number_in_plist(
@@ -18,14 +19,13 @@ lane :build do
 
   versionNumber = get_version_number(xcodeproj: "CI-CD-Test.xcodeproj")
   buildNumber = get_build_number(xcodeproj: "CI-CD-Test.xcodeproj")
-  release_upload_name = "#{versionNumber} (#{buildNumber})"
-
+  release_tag_name["-"] = "_"
 
   github_release = set_github_release(
     repository_name: "sello-lee/CI-CD-Test",
-    name: release_upload_name,
+    name: "#{release_tag_name} (#{buildNumber})",
     api_token: ENV["GIT_TOKEN"],
-    tag_name: "v0.0.8_rc.1/dev",
+    tag_name: release_tag_name,
     description: "디스크립션",
    )
 
