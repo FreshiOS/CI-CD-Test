@@ -20,12 +20,6 @@ lane :build do
   buildNumber = get_build_number(xcodeproj: "CI-CD-Test.xcodeproj")
   release_upload_name = "#{versionNumber} (#{buildNumber})"
 
-  gym(
-    export_method: "app-store",
-    archive_path: "../Archives/",
-    derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
-    clean: true
-  )
 
   github_release = set_github_release(
     repository_name: "sello-lee/CI-CD-Test",
