@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: set envs
       id: envs
-      uses: ./github/actions/common.yaml
+      uses: ./github/actions/common
       with:
         current_branch: ${{ github.ref_name }}
         type: ${{ github.ref_type }}
@@ -42,7 +42,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: configure
-        uses: ./github/actions/configure.yaml
+        uses: ./github/actions/configure
         with:
           xcode-version: 14.3.1
           CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTO_PWD }}
@@ -53,7 +53,7 @@ jobs:
           KEYCHAIN: ${{ 'temp.keychain' }}
       - name: fastlane-action
         id: get_number
-        uses: ./github/actions/fastlane.yaml
+        uses: ./github/actions/fastlane
         with:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           API_KEY: ${{ secrets.API_KEY }}
@@ -79,7 +79,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: configure
-        uses: ./github/actions/configure.yaml
+        uses: ./github/actions/configure
         with:
           xcode-version: 14.3.1
           CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTO_PWD }}
@@ -90,7 +90,7 @@ jobs:
           KEYCHAIN: ${{ 'temp.keychain' }}
       - name: fastlane-action
         id: get_number
-        uses: ./github/actions/fastlane.yaml
+        uses: ./github/actions/fastlane
         with:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           API_KEY: ${{ secrets.API_KEY }}
