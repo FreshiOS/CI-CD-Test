@@ -15,6 +15,14 @@ lane :flight do
     in_house: false
   )
 
+  num1 = latest_testflight_build_number()
+  num2 = app_store_build_number(
+    live: false
+  )
+
+  puts num1
+  puts num2
+
   current_build_number = latest_testflight_build_number() + 1
   version = get_version_number(xcodeproj: "CI-CD-Test.xcodeproj")
   newVersion = ENV["TAG"].split('v')[1].split('-')[0].strip
