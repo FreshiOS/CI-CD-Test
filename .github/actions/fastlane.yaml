@@ -1,0 +1,71 @@
+name: Set GX Mobile ios configure
+author: Bolt lee
+description: 'Prepare gx github aciton value'
+inputs:
+  DEVELOPER_APP_IDENTIFIER:
+    description: 'Enter DEVELOPER_APP_IDENTIFIER'
+    required: true
+    default: ''
+  API_KEY:
+    description: 'Enter API_KEY'
+    required: true
+    default: ''
+  API_ISSUER:
+    description: 'Enter API_ISSUER'
+    required: true
+    default: ''
+  PRIVATE_API_KEY:
+    description: 'Enter PRIVATE_API_KEY'
+    required: true
+    default: ''
+  XC_SCHEME:
+    description: 'Enter XC_SCHEME'
+    required: true
+    default: ''
+  TAG:
+    description: 'Enter TAG'
+    required: true
+    default: ''
+  ALL:
+    description: 'Enter ALL'
+    required: true
+    default: ''
+  GIT_TOKEN:
+    description: 'Enter GIT_TOKEN'
+    required: true
+    default: ''
+  UPLOAD_URL:
+    description: 'Enter UPLOAD_URL'
+    required: true
+    default: ''
+outputs:
+  build_number:
+    description: 'Get fastlane build number'
+    value: ${{ steps.number.outputs.build_number }}
+
+runs:
+  using: "composite"
+  steps:
+    - uses: maierj/fastlane-action@v2.2.0
+      with:
+        lane: 'flight'
+      env:
+        DEVELOPER_APP_IDENTIFIER: ${{ inputs.DEVELOPER_APP_IDENTIFIER }}
+        API_KEY: ${{ inputs.API_KEY }}
+        API_ISSUER : ${{ inputs.API_ISSUER }}
+        PRIVATE_API_KEY: ${{ inputs.PRIVATE_API_KEY }}
+        SCHEME: ${{ inputs.XC_SCHEME }}
+        TAG: ${{ inputs.TAG }}
+        ALL: ${{ inputs.ALL }}
+        GIT_TOKEN: ${{ inputs.GIT_TOKEN }}
+        UPLOAD_URL: ${{ inputs.UPLOAD_URL }}
+    - name: get build number
+      id: number
+      shell: bash
+      run: |
+        fastlane run get_build_number >> number.txt
+        text=`cat number.txt`
+        NUMBER=`echo "${text#*Result:}" | sed -e 's/^"//' -e 's/"$//' | tr -d ' '| sed 's/[^0-9]//g' | rev | cut -c 2- | rev`
+        echo "Number :$NUMBER"
+        echo "build_number=$(echo $NUMBER)" >> $GITHUB_OUTPUT
+

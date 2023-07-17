@@ -1,11 +1,25 @@
 default_platform(:ios)
 
-lane :build do
+lane :flight do
 
+  ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "60"
+  ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "6"
+
+  clear_derived_data
+
+  api_key = app_store_connect_api_key(
+    key_id: ENV["API_KEY"],
+    issuer_id: ENV["API_ISSUER"],
+    key_content: ENV["PRIVATE_API_KEY"],
+    duration: 1200,
+    in_house: false
+  )
+
+  current_build_number = latest_testflight_build_number() + 1
   version = get_version_number(xcodeproj: "CI-CD-Test.xcodeproj")
   newVersion = ENV["TAG"].split('v')[1].split('-')[0].strip
 
-  if version != newVersion 
+  if version != newVersion
     increment_version_number_in_plist(
       version_number: newVersion,
       xcodeproj: "CI-CD-Test.xcodeproj",
@@ -14,26 +28,50 @@ lane :build do
     )
   end
 
-  increment_build_number
+  release_tag_name = "#{ENV["TAG"]}"
 
-  versionNumber = get_version_number(xcodeproj: "CI-CD-Test.xcodeproj")
-  buildNumber = get_build_number(xcodeproj: "CI-CD-Test.xcodeproj")
-  release_upload_name = "#{versionNumber} (#{buildNumber})"
+  if ENV["ALL"] == "true"
+    if ENV["SCHEME"] == "TestApp-Stage"
+      current_build_number += 1
+    end
+    release_tag_name["all"] += "_" + ENV["SCHEME"].split("-")[1].downcase
+  end
+
+  increment_build_number(
+    build_number: current_build_number
+  )
+
+  update_code_signing_settings(
+    use_automatic_signing: false,
+    code_sign_identity: "Apple Distribution",
+    profile_name: "CI-CD-Test-Profile"
+  )
 
   gym(
+    scheme: ENV["SCHEME"],
     export_method: "app-store",
     archive_path: "../Archives/",
     derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
     clean: true
   )
 
+  scheme = ENV["SCHEME"].split("-")[1]
+  value = sh("cd ../CI-CD-Test/App/Config && grep 'NOTE = ' #{scheme}.xcconfig")
+  note = value.split('=')[1].strip
+  changelog = "[#{ENV["SCHEME"]}] #{ENV["TAG"]} \n#{note}"
+
+  pilot(
+    api_key: api_key,
+    changelog: changelog,
+    wait_processing_timeout_duration: 3000
+  )
+
   github_release = set_github_release(
     repository_name: "sello-lee/CI-CD-Test",
-    name: release_upload_name,
+    name: "#{release_tag_name} (#{current_build_number})",
     api_token: ENV["GIT_TOKEN"],
-    tag_name: "#{ENV["TAG"]}-notAll",
+    tag_name: release_tag_name,
     description: changelog,
     upload_assets: ["../Archives/"]
    )
-
 end

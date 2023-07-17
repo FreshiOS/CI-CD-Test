@@ -1,5 +1,4 @@
-name: Deploy Test
-
+name: Deploy
 on:
   push:
     tags:
@@ -7,16 +6,97 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]'
 
 jobs:
-  build:
-    runs-on: macos-latest
+  resolve_environment:
+    runs-on: ubuntu-22.04
+    outputs:
+      deploy_env: ${{ steps.envs.outputs.deploy_env }}
+      check_all:  ${{ steps.envs.outputs.check_all }}
     steps:
-      - name: Checkout
+    - uses: actions/checkout@v3
+    - name: set envs
+      id: envs
+      uses: ./github/actions/common.yaml
+      with:
+        current_branch: ${{ github.ref_name }}
+        type: ${{ github.ref_type }}
+
+  consecutiveness:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: mktcode/consecutive-workflow-action@e2e008186aa210faacd68ec30f6ac236f7e2f435
+      with:
+        token: ${{ secrets.GIT_TOKEN }}
+
+  deploy:
+    needs: [resolve_environment, consecutiveness]
+    if: needs.resolve_environment.outputs.check_all == 'false'
+    strategy:
+      matrix:
+        environment: ["${{ needs.resolve_environment.outputs.deploy_env }}"]
+    environment:
+      name: ${{ matrix.environment }}
+    runs-on: macos-13
+    outputs:
+      build_number: ${{ steps.get_number.outputs.build_number }}
+    steps:
+      - name: checkout
         uses: actions/checkout@v3
-      - name: fastlane-action
-        uses: maierj/fastlane-action@v2.2.0
+      - name: configure
+        uses: ./github/actions/configure.yaml
         with:
-          lane: 'build'
-        env:
+          xcode-version: 14.3.1
+          CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTO_PWD }}
+          ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Klip_app.mobileprovision.gpg' }}
+          DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Klip_app.mobileprovision' }}
+          PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
+          CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
+          KEYCHAIN: ${{ 'temp.keychain' }}
+      - name: fastlane-action
+        id: get_number
+        uses: ./github/actions/fastlane.yaml
+        with:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_ISSUER : ${{ secrets.API_ISSUER }}
+          PRIVATE_API_KEY: ${{ secrets.PRIVATE_API_KEY }}
+          XC_SCHEME: ${{ secrets.XC_SCHEME }}
           TAG: ${{ github.ref_name }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+          ALL: "false"
+
+  deploy-all:
+    needs: [resolve_environment,consecutiveness]
+    if: needs.resolve_environment.outputs.check_all == 'true'
+    strategy:
+      matrix:
+        environment: ["qa","stage"]
+      fail-fast: false
+      max-parallel: 7
+    environment:
+      name: ${{ matrix.environment }}
+    runs-on: macos-13
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: configure
+        uses: ./github/actions/configure.yaml
+        with:
+          xcode-version: 14.3.1
+          CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTO_PWD }}
+          ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Klip_app.mobileprovision.gpg' }}
+          DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Klip_app.mobileprovision' }}
+          PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
+          CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
+          KEYCHAIN: ${{ 'temp.keychain' }}
+      - name: fastlane-action
+        id: get_number
+        uses: ./github/actions/fastlane.yaml
+        with:
+          DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_ISSUER : ${{ secrets.API_ISSUER }}
+          PRIVATE_API_KEY: ${{ secrets.PRIVATE_API_KEY }}
+          XC_SCHEME: ${{ secrets.XC_SCHEME }}
+          TAG: ${{ github.ref_name }}
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+          ALL: "true"

@@ -1,0 +1,80 @@
+name: Set GX Mobile environment
+author: Bolt lee
+description: 'Prepare gx github aciton value'
+inputs:
+  type:
+    description: ''
+    required: false
+    default: 'test'
+  current_branch:
+    description: ''
+    required: false
+    default: 'test'
+outputs:
+  deploy_env:
+    description: 'Get deployed environment'
+    value: ${{ steps.set-values.outputs.deploy_env }}
+  check_all:
+    description: 'Check if value is true'
+    value: ${{ steps.set-values.outputs.check_all }}
+  tag:
+    description: 'Get tag'
+    value: ${{ steps.set-values.outputs.tag }}
+  ref:
+    description: 'Get ref'
+    value: ${{ steps.set-values.outputs.ref }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set custom env values
+      id: set-values
+      shell: bash
+      run: |
+        REF=${{inputs.current_branch}}
+        TYPE=${{inputs.type}}
+        ALL=false
+        DEPLOY_ENV=dev
+        RC_TAG='v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
+        PROD_TAG='v[0-9]+.[0-9]+.[0-9]'
+
+        echo "deploy_env=$( echo "${DEPLOY_ENV}" )" >> $GITHUB_OUTPUT
+        echo "check_all=$( echo "${ALL}" )" >> $GITHUB_OUTPUT
+        echo "ref=$( echo "${REF}" )" >> $GITHUB_OUTPUT
+
+        if [[ "${TYPE}" == "tag" ]] && [[ "${REF}" =~ ${RC_TAG} ]]; then
+          if [[ "${REF}" =~ "dev" ]]; then
+            DEPLOY_ENV=dev
+            echo "Current ENV : dev"
+          fi
+          if [[ "${REF}" =~ "dev2" ]]; then
+            DEPLOY_ENV=dev2
+            echo "Current ENV : dev2"
+          fi
+          if [[ "${REF}" =~ "qa" ]]; then
+            DEPLOY_ENV=qa
+            echo "Current ENV : qa"
+          fi
+          if [[ "${REF}" =~ "qa2" ]]; then
+            DEPLOY_ENV=qa2
+            echo "Current ENV : qa2"
+          fi
+          if [[ "${REF}" =~ "stage" ]]; then
+            DEPLOY_ENV=stage
+            echo "Current ENV : stage"
+          elif [[ "${REF}" =~ "local" ]]; then
+            DEPLOY_ENV=local
+            echo "Current ENV : local"
+          elif [[ "${REF}" =~ "all" ]]; then
+            DEPLOY_ENV=all
+            ALL=true
+            echo "check_all=$( echo "${ALL}" )" >> $GITHUB_OUTPUT
+            echo "Current ENV : all"
+          fi
+
+        elif [[ "${TYPE}" == "tag" ]] && [[ "${REF}" =~ ${PROD_TAG} ]]; then
+          DEPLOY_ENV=prod
+          echo "Current ENV : prod"
+        fi
+        echo "deploy_env=$( echo "${DEPLOY_ENV}" )" >> $GITHUB_OUTPUT
+

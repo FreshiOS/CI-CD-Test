@@ -1,0 +1,11 @@
+//
+//  QA.xcconfig
+//  CI-CD-Test
+//
+//  Created by Se Eun Lee on 2023/07/17.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+NOTE = 환경 : qa
