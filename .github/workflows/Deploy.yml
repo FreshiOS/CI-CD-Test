@@ -46,8 +46,8 @@ jobs:
         with:
           xcode-version: 14.3.1
           CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTO_PWD }}
-          ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Klip_app.mobileprovision.gpg' }}
-          DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Klip_app.mobileprovision' }}
+          ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision.gpg' }}
+          DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision' }}
           PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
           CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
           KEYCHAIN: ${{ 'temp.keychain' }}
@@ -83,8 +83,8 @@ jobs:
         with:
           xcode-version: 14.3.1
           CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTO_PWD }}
-          ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Klip_app.mobileprovision.gpg' }}
-          DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Klip_app.mobileprovision' }}
+          ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision.gpg' }}
+          DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision' }}
           PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
           CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
           KEYCHAIN: ${{ 'temp.keychain' }}
