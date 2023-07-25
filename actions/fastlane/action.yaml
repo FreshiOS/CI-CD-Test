@@ -38,6 +38,14 @@ inputs:
     description: 'Enter UPLOAD_URL'
     required: true
     default: ''
+  SCHEME_ALL_LIST:
+    description: 'Enter SCHEME_ALL_LIST'
+    required: true
+    default: '[]'
+  BUILD_NUMBER:
+    description: 'Enter BUILD_NUMBER'
+    required: true
+    default: '1'
 outputs:
   build_number:
     description: 'Get fastlane build number'
@@ -59,6 +67,8 @@ runs:
         ALL: ${{ inputs.ALL }}
         GIT_TOKEN: ${{ inputs.GIT_TOKEN }}
         UPLOAD_URL: ${{ inputs.UPLOAD_URL }}
+        SCHEME_ALL_LIST: ${{ inputs.SCHEME_ALL_LIST }}
+        BUILD_NUMBER: ${{ inputs.BUILD_NUMBER }}
     - name: get build number
       id: number
       shell: bash

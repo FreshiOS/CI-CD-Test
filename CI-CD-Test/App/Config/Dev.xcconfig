@@ -1,0 +1,11 @@
+//
+//  Dev.xcconfig
+//  CI-CD-Test
+//
+//  Created by sello on 25/07/2023.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+NOTE = 환경 : dev

@@ -15,15 +15,10 @@ lane :flight do
     in_house: false
   )
 
-  num1 = latest_testflight_build_number()
-  num2 = app_store_build_number(
-    live: false
-  )
+  app_store_connect_build_number = latest_testflight_build_number()
+  git_hub_stored_build_number = ENV["BUILD_NUMBER"].to_i
 
-  puts num1
-  puts num2
-
-  current_build_number = latest_testflight_build_number() + 1
+  current_build_number = app_store_connect_build_number > git_hub_stored_build_number ? app_store_connect_build_number + 1 : git_hub_stored_build_number + 1
   version = get_version_number(xcodeproj: "CI-CD-Test.xcodeproj")
   newVersion = ENV["TAG"].split('v')[1].split('-')[0].strip
 
@@ -39,10 +34,12 @@ lane :flight do
   release_tag_name = "#{ENV["TAG"]}"
 
   if ENV["ALL"] == "true"
-    if ENV["SCHEME"] == "TestApp-Stage"
-      current_build_number += 1
-    end
-    release_tag_name["all"] += "_" + ENV["SCHEME"].split("-")[1].downcase
+    puts ENV[SCHEME_ALL_LIST] #{ENV[SCHEME_ALL_LIST]}
+    scheme_list = ENV[SCHEME_ALL_LIST].split(",")
+    scheme = ENV["SCHEME"].split("-")[1].downcase
+    current_build_number += (scheme_list.index(scheme_list.find { |e| e =~ /[:scheme:]/ }) - 1)
+
+    release_tag_name["all"] = ENV["SCHEME"].split("-")[1].upcase
   end
 
   increment_build_number(
@@ -75,7 +72,7 @@ lane :flight do
   )
 
   github_release = set_github_release(
-    repository_name: "sello-lee/CI-CD-Test",
+    repository_name: "FreshiOS/CI-CD-Test",
     name: "#{release_tag_name} (#{current_build_number})",
     api_token: ENV["GIT_TOKEN"],
     tag_name: release_tag_name,

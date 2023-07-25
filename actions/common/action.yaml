@@ -62,9 +62,12 @@ runs:
           if [[ "${REF}" =~ "stage" ]]; then
             DEPLOY_ENV=stage
             echo "Current ENV : stage"
-          elif [[ "${REF}" =~ "local" ]]; then
+          if [[ "${REF}" =~ "local" ]]; then
             DEPLOY_ENV=local
             echo "Current ENV : local"
+          elif [[ "${REF}" =~ "prod" ]]; then
+            DEPLOY_ENV=prod
+            echo "Current ENV : prod"
           elif [[ "${REF}" =~ "all" ]]; then
             DEPLOY_ENV=all
             ALL=true
