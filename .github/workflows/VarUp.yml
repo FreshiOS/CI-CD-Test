@@ -1,0 +1,14 @@
+name: VarUp
+on:
+  workflow_dispatch:
+
+jobs:
+  count_up:
+    runs-on: self-hosted
+    env:
+      NEW_BUILD_NUMBER: ${{ vars.BUILD_NUMBER }} + 1
+    steps:
+      - run: |
+          echo "${{ vars.BUILD_NUMBER }}"
+          echo "$NEW_BUILD_NUMBER"
+          echo $NEW_BUILD_NUMBER >> ${{ vars.BUILD_NUMBER }}
