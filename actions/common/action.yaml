@@ -1,4 +1,4 @@
-name: Set GX Mobile environment
+name: Set GX Mobile common
 author: Bolt lee
 description: 'Prepare gx github aciton value'
 inputs:
