@@ -6,9 +6,10 @@ jobs:
   count_up:
     runs-on: self-hosted
     env:
-      NEW_BUILD_NUMBER: ${{ vars.BUILD_NUMBER }} + 1
+      NEW_BUILD_NUMBER: 3
     steps:
       - run: |
-          echo "${{ vars.BUILD_NUMBER }}"
-          echo "$NEW_BUILD_NUMBER"
-          echo $NEW_BUILD_NUMBER >> ${{ vars.BUILD_NUMBER }}
+          curl -X PATCH https://api.github.com/repos/FreshiOS/CI-CD-Test/actions/variables/BUILD_NUMBER \
+          -H "Accept: application/vnd.github+json" \
+          -u ${{ secrets.GIT_TOKEN }}
+          -d '{"name":"BUILD_NUMBER","value":"${{ env.NEW_BUILD_NUMBER }}"}'
