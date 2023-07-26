@@ -49,7 +49,7 @@ jobs:
           DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision' }}
           PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
           CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
-          KEYCHAIN: "${{ environment.name }}.keychain"
+          KEYCHAIN: "$name.keychain"
           KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PWD }}
       - name: fastlane-action
         id: get_number
@@ -67,7 +67,7 @@ jobs:
       - name: delete-keychain
         shell: bash
         run: |
-          security delete-keychain "${{ environment.name }}.keychain"
+          security delete-keychain "$name.keychain"
 
   deploy-all:
     needs: [resolve_environment,consecutiveness]
@@ -92,7 +92,7 @@ jobs:
           DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision' }}
           PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
           CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
-          KEYCHAIN: "${{ environment.name }}.keychain"
+          KEYCHAIN: "$name.keychain"
           KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PWD }}
       - name: fastlane-action
         id: get_number
@@ -111,4 +111,4 @@ jobs:
       - name: delete-keychain
         shell: bash
         run: |
-          security delete-keychain "${{ environment.name }}.keychain"
+          security delete-keychain "$name.keychain"
