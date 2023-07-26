@@ -118,6 +118,7 @@ jobs:
       - if: needs.deploy-all.configure.result == 'success'
         shell: bash
         run: |
+          echo ${{ needs.deploy-all.strategy.matrix.environment }}
           for name in ${{ needs.deploy-all.strategy.matrix.environment }}
           do
             security delete-keychain "$name.keychain"
