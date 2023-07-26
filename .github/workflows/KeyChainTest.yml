@@ -8,4 +8,4 @@ jobs:
     steps:
       - shell: bash
         run: |
-          security delete-keychain .keychain
+          security delete-keychain $name.keychain
