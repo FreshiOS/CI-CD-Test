@@ -57,6 +57,7 @@ runs:
     - uses: maierj/fastlane-action@v2.2.0
       with:
         lane: 'flight'
+        verbose: true
       env:
         DEVELOPER_APP_IDENTIFIER: ${{ inputs.DEVELOPER_APP_IDENTIFIER }}
         API_KEY: ${{ inputs.API_KEY }}
