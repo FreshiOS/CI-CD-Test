@@ -9,3 +9,4 @@ jobs:
       - shell: bash
         run: |
           security delete-keychain qa.keychain
+          security delete-keychain stage.keychain

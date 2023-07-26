@@ -37,7 +37,7 @@ lane :flight do
   if ENV["ALL"] == "true"
     puts ENV[SCHEME_ALL_LIST] #{ENV[SCHEME_ALL_LIST]}
 
-    scheme_list = ENV[SCHEME_ALL_LIST].split(",")
+    scheme_list = ENV[SCHEME_ALL_LIST]
     scheme = ENV["SCHEME"].split("-")[1].downcase
     index = scheme_list.index(scheme_list.find { |e| e =~ /[:scheme:]/ })
     current_build_number += index

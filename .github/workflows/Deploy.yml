@@ -64,11 +64,6 @@ jobs:
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
           ALL: "false"
-      - name: delete-keychain
-        shell: bash
-        run: |
-          security delete-keychain "${{ env.name }}.keychain"
-          security list-keychains -d user -s login.keychain
 
   deploy-all:
     needs: [resolve_environment,consecutiveness]
@@ -109,8 +104,21 @@ jobs:
           SCHEME_ALL_LIST: ${{ strategy.matrix.environment }}
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
           ALL: "true"
-      - name: delete-keychain
+
+  delete-keychain:
+    runs-on: self-hosted
+    needs: [deploy, deploy-all]
+    steps:
+      - if: needs.deploy.configure.result == 'success'
         shell: bash
         run: |
-          security delete-keychain "${{ env.name }}.keychain"
+          security delete-keychain "${{ needs.deploy.matrix.environment }}.keychain"
+          security list-keychains -d user -s login.keychain
+      - if: needs.deploy-all.configure.result == 'success'
+        shell: bash
+        run: |
+          for name in ${{ needs.deploy-all.matrix.environment }}
+          do
+            security delete-keychain "$name.keychain"
+          done
           security list-keychains -d user -s login.keychain
