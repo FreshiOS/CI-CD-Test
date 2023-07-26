@@ -113,12 +113,12 @@ jobs:
       - if: needs.deploy.configure.result == 'success'
         shell: bash
         run: |
-          security delete-keychain "${{ needs.deploy.matrix.environment }}.keychain"
+          security delete-keychain "${{ needs.deploy.strategy.matrix.environment }}.keychain"
           security list-keychains -d user -s login.keychain
       - if: needs.deploy-all.configure.result == 'success'
         shell: bash
         run: |
-          for name in ${{ needs.deploy-all.matrix.environment }}
+          for name in ${{ needs.deploy-all.strategy.matrix.environment }}
           do
             security delete-keychain "$name.keychain"
           done
