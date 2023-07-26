@@ -33,11 +33,18 @@ lane :flight do
 
   release_tag_name = "#{ENV["TAG"]}"
 
+  isLastBuildNumber = true
   if ENV["ALL"] == "true"
     puts ENV[SCHEME_ALL_LIST] #{ENV[SCHEME_ALL_LIST]}
+
     scheme_list = ENV[SCHEME_ALL_LIST].split(",")
     scheme = ENV["SCHEME"].split("-")[1].downcase
-    current_build_number += (scheme_list.index(scheme_list.find { |e| e =~ /[:scheme:]/ }) - 1)
+    index = scheme_list.index(scheme_list.find { |e| e =~ /[:scheme:]/ })
+    current_build_number += index
+
+    if index + 1 < scheme_list.size
+      isLastBuildNumber = false
+    end
 
     release_tag_name["all"] = ENV["SCHEME"].split("-")[1].upcase
   end
@@ -70,6 +77,16 @@ lane :flight do
     changelog: changelog,
     wait_processing_timeout_duration: 3000
   )
+
+  if isLastBuildNumber = true
+    github_api(
+      server_url: "https://api.github.com",
+      path: "/repos/FreshiOS/CI-CD-Test/actions/variables/BUILD_NUMBER",
+      http_method: "PATCH",
+      api_token: ENV["GIT_TOKEN"],
+      body: {"name":"BUILD_NUMBER","value":"#{current_build_number}"}
+    )
+  end
 
   github_release = set_github_release(
     repository_name: "FreshiOS/CI-CD-Test",

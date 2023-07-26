@@ -102,29 +102,3 @@ jobs:
           SCHEME_ALL_LIST: ${{ strategy.matrix.environment }}
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
           ALL: "true"
-
-  update-build-number:
-    runs-on: self-hosted
-    needs: [deploy, deploy-all]
-    steps:
-      - if: needs.deploy.result == 'success'
-        run: |
-          build_number=($(echo ${{ needs.deploy.outputs.build_number }} | tr " " "\n"))[0]
-          curl -L \
-            -X PATCH \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GIT_TOKEN }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/FreshiOS/CI-CD-Test/actions/variables/BUILD_NUMBER \
-            -d '{"name":"BUILD_NUMBER","value":"${build_number}"}'
-      - if: needs.deploy-all.result == 'success'
-        run: |
-          build_number=($(echo ${{ needs.deploy.outputs.build_number }} | tr " " "\n"))[0]
-          curl -L \
-            -X PATCH \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GIT_TOKEN }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/FreshiOS/CI-CD-Test/actions/variables/BUILD_NUMBER \
-            -d '{"name":"BUILD_NUMBER","value":"${build_number}"}'
-
