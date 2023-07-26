@@ -38,6 +38,10 @@ inputs:
     description: '' # certification export key
     required: false
     default: ${{ 'test.keychain' }}
+  KEYCHAIN_PWD:
+    description: '' # certification export key
+    required: true
+    default: ''
 
 outputs:
   deploy_env:
@@ -61,10 +65,9 @@ runs:
     - name: Configure keychain
       shell: bash
       run: |
-        security create-keychain -p "" ${{ inputs.KEYCHAIN }}
         security list-keychains -s ${{ inputs.KEYCHAIN }}
         security default-keychain -s ${{ inputs.KEYCHAIN }}
-        security unlock-keychain -p "" ${{ inputs.KEYCHAIN }}
+        security unlock-keychain -p "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
         security set-keychain-settings
     - name: Configure Code Signing
       shell: bash
