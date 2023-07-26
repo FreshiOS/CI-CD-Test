@@ -13,10 +13,18 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-### git_api
+### test
 
 ```sh
-[bundle exec] fastlane git_api
+[bundle exec] fastlane test
+```
+
+
+
+### print
+
+```sh
+[bundle exec] fastlane print
 ```
 
 

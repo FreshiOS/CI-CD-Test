@@ -36,7 +36,9 @@ lane :flight do
   isLastBuildNumber = true
   if ENV["ALL"] == "true"
     scheme_list = ENV["SCHEME_ALL_LIST"]
-    scheme = ENV["SCHEME"].split("-")[1].downcase
+    splitted = ENV["SCHEME"].split("-")
+    scheme_upcase = ENV["SCHEME"].split("-")[1]
+    scheme = scheme_upcase.downcase
     idx = scheme_list.index(scheme)
     current_build_number += idx
 
