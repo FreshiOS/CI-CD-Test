@@ -62,6 +62,7 @@ runs:
           if [[ "${REF}" =~ "stage" ]]; then
             DEPLOY_ENV=stage
             echo "Current ENV : stage"
+          fi
           if [[ "${REF}" =~ "local" ]]; then
             DEPLOY_ENV=local
             echo "Current ENV : local"
