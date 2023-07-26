@@ -41,7 +41,7 @@ inputs:
   SCHEME_ALL_LIST:
     description: 'Enter SCHEME_ALL_LIST'
     required: true
-    default: []
+    default: ''
   BUILD_NUMBER:
     description: 'Enter BUILD_NUMBER'
     required: true

@@ -108,6 +108,7 @@ jobs:
   delete-keychain:
     runs-on: self-hosted
     needs: [deploy, deploy-all]
+    if: always()
     steps:
       - if: needs.deploy.configure.result == 'success'
         shell: bash
