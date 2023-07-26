@@ -68,6 +68,7 @@ jobs:
         shell: bash
         run: |
           security delete-keychain "${{ env.name }}.keychain"
+          security list-keychains -d user -s login.keychain
 
   deploy-all:
     needs: [resolve_environment,consecutiveness]
@@ -112,3 +113,4 @@ jobs:
         shell: bash
         run: |
           security delete-keychain "${{ env.name }}.keychain"
+          security list-keychains -d user -s login.keychain
