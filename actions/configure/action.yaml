@@ -65,6 +65,7 @@ runs:
     - name: Configure keychain
       shell: bash
       run: |
+        security create-keychain -p ${{ inputs.KEYCHAIN }}
         security list-keychains -s ${{ inputs.KEYCHAIN }}
         security default-keychain -s ${{ inputs.KEYCHAIN }}
         security unlock-keychain -p "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
