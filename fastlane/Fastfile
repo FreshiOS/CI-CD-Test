@@ -36,15 +36,15 @@ lane :flight do
   isLastBuildNumber = true
   if ENV["ALL"] == "true"
     scheme_list = ENV["SCHEME_ALL_LIST"]
-    scheme = ENV["SCHEME"].split("-")[1].downcase
-    idx = scheme_list.index(scheme)
+    scheme = ENV["SCHEME"].split("-")[1]&.downcase || ""
+    idx = scheme_list.index(scheme) || 0
     current_build_number += idx
 
     if idx + 1 < scheme_list.size
       isLastBuildNumber = false
     end
 
-    release_tag_name["all"] = ENV["SCHEME"].split("-")[1].upcase
+    release_tag_name["all"] = ENV["SCHEME"].split("-")[1]&.upcase || ""
   end
 
   increment_build_number(
