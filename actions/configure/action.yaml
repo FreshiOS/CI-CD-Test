@@ -65,11 +65,11 @@ runs:
     - name: Configure keychain
       shell: bash
       run: |
-        security list-keychains -d user -s login.keychain
-        security create-keychain -p "${{ inputs.KEYCHAIN_PWD }}" "${{ inputs.KEYCHAIN }}"
-        security list-keychains -d user -s "${{ inputs.KEYCHAIN }}" $(security list-keychains -d user | sed s/\"//g)
-        security set-keychain-settings "${{ inputs.KEYCHAIN }}"
-        security unlock-keychain -p "${{ inputs.KEYCHAIN_PWD }}" "${{ inputs.KEYCHAIN }}"
+        security create-keychain -p "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
+        security list-keychains -s ${{ inputs.KEYCHAIN }}
+        security default-keychain -s ${{ inputs.KEYCHAIN }}
+        security unlock-keychain -p "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
+        security set-keychain-settings
     - name: Configure Code Signing
       shell: bash
       run: |

@@ -84,5 +84,3 @@ runs:
       shell: bash
       run: |
           security delete-keychain "${{ inputs.XC_SCHEME }}.keychain"
-          security list-keychains -d user -s login.keychain
-
