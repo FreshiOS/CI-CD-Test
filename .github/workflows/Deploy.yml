@@ -49,7 +49,7 @@ jobs:
           DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision' }}
           PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
           CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
-          KEYCHAIN: "${{ env.name }}.keychain"
+          KEYCHAIN: "${{ secrets.XC_SCHEME }}.keychain"
           KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PWD }}
       - name: fastlane-action
         id: get_number
@@ -88,7 +88,7 @@ jobs:
           DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision' }}
           PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
           CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
-          KEYCHAIN: "${{ env.name }}.keychain"
+          KEYCHAIN: "${{ secrets.XC_SCHEME }}.keychain"
           KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PWD }}
       - name: fastlane-action
         id: get_number
@@ -104,23 +104,3 @@ jobs:
           SCHEME_ALL_LIST: ${{ strategy.matrix.environment }}
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
           ALL: "true"
-
-  delete-keychain:
-    runs-on: self-hosted
-    needs: [deploy, deploy-all]
-    if: always()
-    steps:
-      - if: needs.deploy.configure.result == 'success'
-        shell: bash
-        run: |
-          security delete-keychain "${{ needs.deploy.strategy.matrix.environment }}.keychain"
-          security list-keychains -d user -s login.keychain
-      - if: needs.deploy-all.configure.result == 'success'
-        shell: bash
-        run: |
-          echo ${{ needs.deploy-all.strategy.matrix.environment }}
-          for name in ${{ needs.deploy-all.strategy.matrix.environment }}
-          do
-            security delete-keychain "$name.keychain"
-          done
-          security list-keychains -d user -s login.keychain

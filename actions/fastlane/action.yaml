@@ -79,4 +79,10 @@ runs:
         NUMBER=`echo "${text#*Result:}" | sed -e 's/^"//' -e 's/"$//' | tr -d ' '| sed 's/[^0-9]//g' | rev | cut -c 2- | rev`
         echo "Number :$NUMBER"
         echo "build_number=$(echo $NUMBER)" >> $GITHUB_OUTPUT
+    - name: delete keychain
+      if: always()
+      shell: bash
+      run: |
+          security delete-keychain "${{ inputs.XC_SCHEME }}.keychain"
+          security list-keychains -d user -s login.keychain
 
