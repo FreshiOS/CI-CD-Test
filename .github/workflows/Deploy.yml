@@ -32,7 +32,7 @@ jobs:
     strategy:
       matrix:
         environment: ["${{ needs.resolve_environment.outputs.deploy_env }}"]
-    env:
+    environment:
       name: ${{ matrix.environment }}
     runs-on: self-hosted
     outputs:
@@ -73,7 +73,7 @@ jobs:
         environment: ["qa","stage"]
       fail-fast: false
       max-parallel: 7
-    env:
+    environment:
       name: ${{ matrix.environment }}
     runs-on: self-hosted
     steps:
