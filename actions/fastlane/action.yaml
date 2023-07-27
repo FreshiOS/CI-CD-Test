@@ -83,4 +83,4 @@ runs:
       if: always()
       shell: bash
       run: |
-          security delete-keychain "${{ inputs.XC_SCHEME }}.keychain"
+        security delete-keychain ${{ inputs.XC_SCHEME }}.keychain
