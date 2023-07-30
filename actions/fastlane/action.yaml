@@ -46,6 +46,10 @@ inputs:
     description: 'Enter BUILD_NUMBER'
     required: true
     default: '1'
+  KEYCHAIN_PWD:
+    description: 'Enter BUILD_NUMBER'
+    required: true
+    default: ''
 outputs:
   build_number:
     description: 'Get fastlane build number'
@@ -70,6 +74,7 @@ runs:
         UPLOAD_URL: ${{ inputs.UPLOAD_URL }}
         SCHEME_ALL_LIST: ${{ inputs.SCHEME_ALL_LIST }}
         BUILD_NUMBER: ${{ inputs.BUILD_NUMBER }}
+        KEYCHAIN_PWD: ${{ inputs.KEYCHAIN_PWD }}
     - name: get build number
       id: number
       shell: bash

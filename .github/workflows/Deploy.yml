@@ -63,6 +63,7 @@ jobs:
           TAG: ${{ github.ref_name }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
+          KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PWD }}
           ALL: "false"
 
   deploy-all:
@@ -103,4 +104,5 @@ jobs:
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
           SCHEME_ALL_LIST: ${{ strategy.matrix.environment }}
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
+          KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PWD }}
           ALL: "true"

@@ -53,6 +53,12 @@ lane :flight do
     build_number: current_build_number
   )
 
+  import_certificate(
+    certificate_path: ".github/secrets/certs.p12",
+    keychain_path: "/Users/gx/Library/Keychains/#{ENV["SCHEME"]}.keychain-db",
+    keychain_password: ENV["KEYCHAIN_PWD"]
+  )
+
   update_code_signing_settings(
     use_automatic_signing: false,
     code_sign_identity: "Apple Distribution",
@@ -67,9 +73,9 @@ lane :flight do
     clean: true
   )
 
-  scheme = ENV["SCHEME"].split("-")[1]
+  scheme = ENV["SCHEME"].split("-")[1] || "dev"
   value = sh("cd ../CI-CD-Test/App/Config && grep 'NOTE = ' #{scheme}.xcconfig")
-  note = value.split('=')[1].strip
+  note = value.split('=')[1]&.strip || ""
   changelog = "[#{ENV["SCHEME"]}] #{ENV["TAG"]} \n#{note}"
 
   pilot(
