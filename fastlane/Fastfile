@@ -53,10 +53,10 @@ lane :flight do
     build_number: current_build_number
   )
 
-  import_certificate(
-    certificate_path: ".github/secrets/certs.p12",
-    keychain_path: "/Users/gx/Library/Keychains/#{ENV["SCHEME"]}.keychain-db",
-    keychain_password: ENV["KEYCHAIN_PWD"]
+  unlock_keychain(
+    path: "/Users/gx/Library/Keychains/#{ENV["SCHEME"]}.keychain-db",
+    password: ENV["KEYCHAIN_PWD"],
+    set_default: true
   )
 
   update_code_signing_settings(

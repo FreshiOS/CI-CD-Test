@@ -8,5 +8,5 @@ jobs:
     steps:
       - shell: bash
         run: |
-          security delete-keychain qa.keychain
-          security delete-keychain stage.keychain
+          security delete-keychain TestApp-QA.keychain
+          security delete-keychain TestApp-Stage.keychain
