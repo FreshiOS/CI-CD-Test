@@ -60,7 +60,6 @@ runs:
         security set-keychain-settings
 
         security import ${{ inputs.DECRYPTED_CERT_FILE_PATH }} -k ${{ inputs.KEYCHAIN }} -P ${{ inputs.CERT_EXPORT_KEY }} -A
-        security verify-cert -c ${{ inputs.DECRYPTED_CERT_FILE_PATH }} -p codeSign -k ${{ inputs.KEYCHAIN }}
         security set-key-partition-list -S apple-tool:,apple: -s -k "" ${{ inputs.KEYCHAIN }}
 
         mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
