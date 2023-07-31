@@ -50,7 +50,6 @@ jobs:
           PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
           CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
           KEYCHAIN: "${{ secrets.XC_SCHEME }}.keychain"
-          KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PWD }}
       - name: fastlane-action
         id: get_number
         uses: ./actions/fastlane
@@ -89,7 +88,6 @@ jobs:
           PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
           CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
           KEYCHAIN: "${{ secrets.XC_SCHEME }}.keychain"
-          KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PWD }}
       - name: fastlane-action
         id: get_number
         uses: ./actions/fastlane

@@ -38,10 +38,6 @@ inputs:
     description: '' # certification export key
     required: false
     default: ${{ 'test.keychain' }}
-  KEYCHAIN_PWD:
-    description: '' # certification export key
-    required: true
-    default: ''
 
 runs:
   using: "composite"
@@ -56,14 +52,14 @@ runs:
         gpg -d -o  ${{ inputs.DECRYPTED_CERT_FILE_PATH }} --pinentry-mode=loopback --passphrase ${{ inputs.CERT_ENCRYPTION_KEY }} ${{ inputs.ENCRYPTED_CERT_FILE_PATH }}
         gpg -d -o ${{ inputs.DECRYPTED_PROVISION_FILE_PATH }} --pinentry-mode=loopback --passphrase ${{ inputs.PROVISIONING_ENCRYPTION_KEY }} ${{ inputs.ENCRYPTED_PROVISION_FILE_PATH }}
 
-        security create-keychain -p "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
+        security create-keychain -p "" ${{ inputs.KEYCHAIN }}
         security list-keychains -s ${{ inputs.KEYCHAIN }}
         security default-keychain -s ${{ inputs.KEYCHAIN }}
-        security unlock-keychain -p "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
+        security unlock-keychain -p "" ${{ inputs.KEYCHAIN }}
         security set-keychain-settings
 
         security import ${{ inputs.DECRYPTED_CERT_FILE_PATH }} -k ${{ inputs.KEYCHAIN }} -P ${{ inputs.CERT_EXPORT_KEY }} -A
-        security set-key-partition-list -S apple-tool:,apple: -s -k "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
+        security set-key-partition-list -S apple-tool:,apple: -s -k "" ${{ inputs.KEYCHAIN }}
 
         mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
         echo `ls .github/secrets/*.mobileprovision`
