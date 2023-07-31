@@ -52,13 +52,15 @@ runs:
         gpg -d -o  ${{ inputs.DECRYPTED_CERT_FILE_PATH }} --pinentry-mode=loopback --passphrase ${{ inputs.CERT_ENCRYPTION_KEY }} ${{ inputs.ENCRYPTED_CERT_FILE_PATH }}
         gpg -d -o ${{ inputs.DECRYPTED_PROVISION_FILE_PATH }} --pinentry-mode=loopback --passphrase ${{ inputs.PROVISIONING_ENCRYPTION_KEY }} ${{ inputs.ENCRYPTED_PROVISION_FILE_PATH }}
 
+        security list-keychains -d system -s System.keychain
         security create-keychain -p "" ${{ inputs.KEYCHAIN }}
-        security list-keychains -s ${{ inputs.KEYCHAIN }}
+        security list-keychains -d system -s "${{ inputs.KEYCHAIN }}" $(security list-keychains -d system | sed s/\"//g)
         security default-keychain -s ${{ inputs.KEYCHAIN }}
         security unlock-keychain -p "" ${{ inputs.KEYCHAIN }}
         security set-keychain-settings
 
         security import ${{ inputs.DECRYPTED_CERT_FILE_PATH }} -k ${{ inputs.KEYCHAIN }} -P ${{ inputs.CERT_EXPORT_KEY }} -A
+        security verify-cert -c ${{ inputs.DECRYPTED_CERT_FILE_PATH }} -p codeSign -k ${{ inputs.KEYCHAIN }}
         security set-key-partition-list -S apple-tool:,apple: -s -k "" ${{ inputs.KEYCHAIN }}
 
         mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
