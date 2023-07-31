@@ -43,18 +43,6 @@ inputs:
     required: true
     default: ''
 
-outputs:
-  deploy_env:
-    description: 'Get deployed environment'
-    value: ${{ steps.set-values.outputs.deploy_env }}
-  check_all:
-    description: 'Check if value is true'
-    value: ${{ steps.set-values.outputs.check_all }}
-  tag:
-    description: 'Get tag'
-    value: ${{ steps.set-values.outputs.tag }}
-
-
 runs:
   using: "composite"
   steps:
@@ -62,21 +50,21 @@ runs:
       uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: ${{ inputs.xcode-version }}
-    - name: Configure keychain
+    - name: Configure Keychain and Code Signing
       shell: bash
       run: |
+        gpg -d -o  ${{ inputs.DECRYPTED_CERT_FILE_PATH }} --pinentry-mode=loopback --passphrase ${{ inputs.CERT_ENCRYPTION_KEY }} ${{ inputs.ENCRYPTED_CERT_FILE_PATH }}
+        gpg -d -o ${{ inputs.DECRYPTED_PROVISION_FILE_PATH }} --pinentry-mode=loopback --passphrase ${{ inputs.PROVISIONING_ENCRYPTION_KEY }} ${{ inputs.ENCRYPTED_PROVISION_FILE_PATH }}
+
         security create-keychain -p "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
         security list-keychains -s ${{ inputs.KEYCHAIN }}
         security default-keychain -s ${{ inputs.KEYCHAIN }}
         security unlock-keychain -p "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
         security set-keychain-settings
-    - name: Configure Code Signing
-      shell: bash
-      run: |
-        gpg -d -o  ${{ inputs.DECRYPTED_CERT_FILE_PATH }} --pinentry-mode=loopback --passphrase ${{ inputs.CERT_ENCRYPTION_KEY }} ${{ inputs.ENCRYPTED_CERT_FILE_PATH }}
-        gpg -d -o ${{ inputs.DECRYPTED_PROVISION_FILE_PATH }} --pinentry-mode=loopback --passphrase ${{ inputs.PROVISIONING_ENCRYPTION_KEY }} ${{ inputs.ENCRYPTED_PROVISION_FILE_PATH }}
-        security set-key-partition-list -S apple-tool:,apple: -s -k "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
+
         security import ${{ inputs.DECRYPTED_CERT_FILE_PATH }} -k ${{ inputs.KEYCHAIN }} -P ${{ inputs.CERT_EXPORT_KEY }} -A
+        security set-key-partition-list -S apple-tool:,apple: -s -k "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
+
         mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
         echo `ls .github/secrets/*.mobileprovision`
           for PROVISION in `ls .github/secrets/*.mobileprovision`
