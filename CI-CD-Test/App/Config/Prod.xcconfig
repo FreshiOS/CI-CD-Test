@@ -1,0 +1,11 @@
+//
+//  Prod.xcconfig
+//  CI-CD-Test
+//
+//  Created by sello on 31/07/2023.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+NOTE = 환경 : prod

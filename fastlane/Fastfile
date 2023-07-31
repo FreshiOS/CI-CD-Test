@@ -59,12 +59,6 @@ lane :flight do
     set_default: true
   )
 
-  update_code_signing_settings(
-    use_automatic_signing: false,
-    code_sign_identity: "Apple Distribution",
-    profile_name: "CI-CD-Test-Profile"
-  )
-
   gym(
     scheme: ENV["SCHEME"],
     export_method: "app-store",

@@ -75,8 +75,8 @@ runs:
       run: |
         gpg -d -o  ${{ inputs.DECRYPTED_CERT_FILE_PATH }} --pinentry-mode=loopback --passphrase ${{ inputs.CERT_ENCRYPTION_KEY }} ${{ inputs.ENCRYPTED_CERT_FILE_PATH }}
         gpg -d -o ${{ inputs.DECRYPTED_PROVISION_FILE_PATH }} --pinentry-mode=loopback --passphrase ${{ inputs.PROVISIONING_ENCRYPTION_KEY }} ${{ inputs.ENCRYPTED_PROVISION_FILE_PATH }}
-        security import ${{ inputs.DECRYPTED_CERT_FILE_PATH }} -k ${{ inputs.KEYCHAIN }} -P  ${{ inputs.CERT_EXPORT_KEY }} -A
         security set-key-partition-list -S apple-tool:,apple: -s -k "${{ inputs.KEYCHAIN_PWD }}" ${{ inputs.KEYCHAIN }}
+        security import ${{ inputs.DECRYPTED_CERT_FILE_PATH }} -k ${{ inputs.KEYCHAIN }} -P ${{ inputs.CERT_EXPORT_KEY }} -A
         mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
         echo `ls .github/secrets/*.mobileprovision`
           for PROVISION in `ls .github/secrets/*.mobileprovision`
