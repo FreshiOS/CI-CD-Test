@@ -53,10 +53,10 @@ lane :flight do
     build_number: current_build_number
   )
 
-  unlock_keychain(
-    path: "/Users/gx/Library/Keychains/#{ENV["SCHEME"]}.keychain-db",
-    password: ENV["KEYCHAIN_PWD"],
-    set_default: true
+  update_code_signing_settings(
+    use_automatic_signing: false,
+    code_sign_identity: "Apple Distribution",
+    profile_name: "CI-CD-Test-Profile"
   )
 
   gym(
