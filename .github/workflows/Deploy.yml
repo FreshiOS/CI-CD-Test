@@ -8,7 +8,7 @@ jobs:
   resolve_environment:
     runs-on: self-hosted
     outputs:
-      scheme_list: ${{ join(fromJson(steps.envs.outputs.deploy_env), ',') }}
+      scheme_list: ${{ steps.envs.outputs.deploy_env }}
       check_all:  ${{ steps.envs.outputs.check_all }}
     steps:
     - uses: actions/checkout@v3
