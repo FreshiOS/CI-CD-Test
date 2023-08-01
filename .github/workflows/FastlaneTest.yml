@@ -6,10 +6,10 @@ jobs:
   fastlane-action:
     runs-on: self-hosted
     env:
-      scheme_list: ["qa", "stage"]
+      scheme_list: ${{ fromJson(strategy.matrix.environment) }}
     strategy:
       matrix:
-        environment: ${{ fromJson(env.scheme_list) }}
+        environment: ["qa", "stage"]
   	steps: 
   	  - uses: maierj/fastlane-action@v2.2.0
   	    with:
