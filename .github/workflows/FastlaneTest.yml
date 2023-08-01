@@ -1,5 +1,6 @@
 name: FastlaneTest
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'qa'
@@ -7,10 +8,10 @@ on:
 
 jobs:
   fastlane-action:
+    runs-on: self-hosted
     strategy:
       matrix:
         environment: ["qa","stage"]
-  	runs-on: self-hosted
   	steps: 
   	  - uses: maierj/fastlane-action@v2.2.0
   	    with:
