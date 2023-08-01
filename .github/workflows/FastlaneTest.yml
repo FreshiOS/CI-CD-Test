@@ -1,0 +1,21 @@
+name: FastlaneTest
+on:
+  push:
+    tags:
+
+jobs:
+  fastlane-action:
+    strategy:
+      matrix:
+        environment: ["qa","stage"]
+  	runs-on: self-hosted
+  	steps: 
+  	  - uses: maierj/fastlane-action@v2.2.0
+  	    with:
+  	      lane: splitTest
+  	    env: 
+  	      DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+          SCHEME_ALL_LIST: ${{ strategy.matrix.environment }}
+          SCHEME: ${{ github.ref_name }}
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+          BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}

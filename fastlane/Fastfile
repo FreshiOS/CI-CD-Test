@@ -1,5 +1,22 @@
 default_platform(:ios)
 
+lane :splitTest do
+  scheme_list = ENV["SCHEME_ALL_LIST"]
+  puts ENV["SCHEME_ALL_LIST"]
+  puts ENV["SCHEME"]
+  idx = scheme_list.index(scheme) || 0
+  puts idx
+  current_build_number = ENV["BUILD_NUMBER"].to_i + idx
+
+  github_api(
+    server_url: "https://api.github.com",
+    path: "/repos/FreshiOS/CI-CD-Test/actions/variables/BUILD_NUMBER",
+    http_method: "PATCH",
+    api_token: ENV["GIT_TOKEN"],
+    body: {"name":"BUILD_NUMBER","value":"#{current_build_number}"}
+  )
+end
+
 lane :flight do
 
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "60"

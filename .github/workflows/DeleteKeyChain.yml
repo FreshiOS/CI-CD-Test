@@ -1,4 +1,4 @@
-name: KeyChainTest
+name: DeleteKeyChain
 on:
   workflow_dispatch:
 
@@ -7,6 +7,10 @@ jobs:
     runs-on: self-hosted
     steps:
       - shell: bash
+        if: always()
         run: |
           security delete-keychain TestApp-QA.keychain
+      - shell: bash
+        if: always()
+        run: |
           security delete-keychain TestApp-Stage.keychain
