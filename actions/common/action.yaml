@@ -81,5 +81,5 @@ runs:
             echo "check_all=$( echo "${ALL}" )" >> $GITHUB_OUTPUT
             echo "Current ENV : all - qa, stage"
           fi
-
+        fi
         echo "deploy_env=$( echo "${DEPLOY_ENV}" )" >> $GITHUB_OUTPUT
