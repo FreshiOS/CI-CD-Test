@@ -10,12 +10,12 @@ jobs:
     strategy:
       matrix:
         environment: ["qa", "stage"]
-  	steps: 
-  	  - uses: maierj/fastlane-action@v2.2.0
-  	    with:
-  	      lane: splitTest
-  	    env: 
-  	      DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+    steps:
+      - uses: maierj/fastlane-action@v2.2.0
+        with:
+          lane: splitTest
+        env:
+          DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           SCHEME_ALL_LIST: ${{ env.scheme_list }}
           SCHEME: ${{ matrix.environment }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
