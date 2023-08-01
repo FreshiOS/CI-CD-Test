@@ -35,8 +35,7 @@ runs:
         TYPE=${{inputs.type}}
         ALL=false
         DEPLOY_ENV=dev
-        RC_TAG='v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
-        PROD_TAG='v[0-9]+.[0-9]+.[0-9]'
+        RC_TAG='v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+/[0-9a-z]+'
 
         echo "deploy_env=$( echo "${DEPLOY_ENV}" )" >> $GITHUB_OUTPUT
         echo "check_all=$( echo "${ALL}" )" >> $GITHUB_OUTPUT
@@ -66,19 +65,21 @@ runs:
           if [[ "${REF}" =~ "local" ]]; then
             DEPLOY_ENV=local
             echo "Current ENV : local"
-          elif [[ "${REF}" =~ "prod" ]]; then
+          fi
+          if [[ "${REF}" =~ "prod" ]]; then
             DEPLOY_ENV=prod
             echo "Current ENV : prod"
-          elif [[ "${REF}" =~ "all" ]]; then
-            DEPLOY_ENV=all
+          fi
+          if [[ "${REF}" =~ "all2" ]]; then
+            DEPLOY_ENV=[qa2, stage]
             ALL=true
             echo "check_all=$( echo "${ALL}" )" >> $GITHUB_OUTPUT
-            echo "Current ENV : all"
+            echo "Current ENV : all2 - qa2, stage"
+          elif [[ "${REF}" =~ "all" ]]; then
+            DEPLOY_ENV=[qa, stage]
+            ALL=true
+            echo "check_all=$( echo "${ALL}" )" >> $GITHUB_OUTPUT
+            echo "Current ENV : all - qa, stage"
           fi
 
-        elif [[ "${TYPE}" == "tag" ]] && [[ "${REF}" =~ ${PROD_TAG} ]]; then
-          DEPLOY_ENV=prod
-          echo "Current ENV : prod"
-        fi
         echo "deploy_env=$( echo "${DEPLOY_ENV}" )" >> $GITHUB_OUTPUT
-

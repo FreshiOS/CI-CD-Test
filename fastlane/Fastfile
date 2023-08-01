@@ -1,22 +1,5 @@
 default_platform(:ios)
 
-lane :splitTest do
-  scheme_list = ENV["SCHEME_ALL_LIST"]
-  puts ENV["SCHEME_ALL_LIST"]
-  puts ENV["SCHEME"]
-  idx = scheme_list.index(scheme) || 0
-  puts idx
-  current_build_number = ENV["BUILD_NUMBER"].to_i + idx
-
-  github_api(
-    server_url: "https://api.github.com",
-    path: "/repos/FreshiOS/CI-CD-Test/actions/variables/BUILD_NUMBER",
-    http_method: "PATCH",
-    api_token: ENV["GIT_TOKEN"],
-    body: {"name":"BUILD_NUMBER","value":"#{current_build_number}"}
-  )
-end
-
 lane :flight do
 
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "60"
@@ -52,8 +35,8 @@ lane :flight do
 
   isLastBuildNumber = true
   if ENV["ALL"] == "true"
-    scheme_list = ENV["SCHEME_ALL_LIST"]
-    puts ENV["SCHEME_ALL_LIST"]
+    scheme_list = ENV["SCHEME_LIST"]
+    puts ENV["SCHEME_LIST"]
     puts ENV["SCHEME"]
     scheme = ENV["SCHEME"].split("-")[1]&.downcase || ""
     idx = scheme_list.index(scheme) || 0
@@ -70,30 +53,30 @@ lane :flight do
     build_number: current_build_number
   )
 
-  update_code_signing_settings(
-    use_automatic_signing: false,
-    code_sign_identity: "Apple Distribution",
-    profile_name: "CI-CD-Test-Profile"
-  )
+  # update_code_signing_settings(
+  #   use_automatic_signing: false,
+  #   code_sign_identity: "Apple Distribution",
+  #   profile_name: "CI-CD-Test-Profile"
+  # )
 
-  gym(
-    scheme: ENV["SCHEME"],
-    export_method: "app-store",
-    archive_path: "../Archives/",
-    derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
-    clean: true
-  )
+  # gym(
+  #   scheme: ENV["SCHEME"],
+  #   export_method: "app-store",
+  #   archive_path: "../Archives/",
+  #   derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
+  #   clean: true
+  # )
 
-  scheme = ENV["SCHEME"].split("-")[1] || "dev"
-  value = sh("cd ../CI-CD-Test/App/Config && grep 'NOTE = ' #{scheme}.xcconfig")
-  note = value.split('=')[1]&.strip || ""
-  changelog = "[#{ENV["SCHEME"]}] #{ENV["TAG"]} \n#{note}"
+  # scheme = ENV["SCHEME"].split("-")[1] || "dev"
+  # value = sh("cd ../CI-CD-Test/App/Config && grep 'NOTE = ' #{scheme}.xcconfig")
+  # note = value.split('=')[1]&.strip || ""
+  # changelog = "[#{ENV["SCHEME"]}] #{ENV["TAG"]} \n#{note}"
 
-  pilot(
-    api_key: api_key,
-    changelog: changelog,
-    wait_processing_timeout_duration: 3000
-  )
+  # pilot(
+  #   api_key: api_key,
+  #   changelog: changelog,
+  #   wait_processing_timeout_duration: 3000
+  # )
 
   if isLastBuildNumber = true
     github_api(
@@ -105,12 +88,12 @@ lane :flight do
     )
   end
 
-  github_release = set_github_release(
-    repository_name: "FreshiOS/CI-CD-Test",
-    name: "#{release_tag_name} (#{current_build_number})",
-    api_token: ENV["GIT_TOKEN"],
-    tag_name: release_tag_name,
-    description: changelog,
-    upload_assets: ["../Archives/"]
-   )
+  # github_release = set_github_release(
+  #   repository_name: "FreshiOS/CI-CD-Test",
+  #   name: "#{release_tag_name} (#{current_build_number})",
+  #   api_token: ENV["GIT_TOKEN"],
+  #   tag_name: release_tag_name,
+  #   description: changelog,
+  #   upload_assets: ["../Archives/"]
+  #  )
 end
