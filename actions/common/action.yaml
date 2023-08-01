@@ -34,7 +34,7 @@ runs:
         REF=${{inputs.current_branch}}
         TYPE=${{inputs.type}}
         ALL=false
-        DEPLOY_ENV=("dev")
+        DEPLOY_ENV=(dev)
         RC_TAG='v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+/[0-9a-z]+'
 
         echo "deploy_env=$( echo "${DEPLOY_ENV}" )" >> $GITHUB_OUTPUT
@@ -43,40 +43,40 @@ runs:
 
         if [[ "${TYPE}" == "tag" ]] && [[ "${REF}" =~ ${RC_TAG} ]]; then
           if [[ "${REF}" =~ "dev" ]]; then
-            DEPLOY_ENV=("dev")
+            DEPLOY_ENV=(dev)
             echo "Current ENV : dev"
           fi
           if [[ "${REF}" =~ "dev2" ]]; then
-            DEPLOY_ENV=("dev2")
+            DEPLOY_ENV=(dev2)
             echo "Current ENV : dev2"
           fi
           if [[ "${REF}" =~ "qa" ]]; then
-            DEPLOY_ENV=("qa")
+            DEPLOY_ENV=(qa)
             echo "Current ENV : qa"
           fi
           if [[ "${REF}" =~ "qa2" ]]; then
-            DEPLOY_ENV=("qa2")
+            DEPLOY_ENV=(qa2)
             echo "Current ENV : qa2"
           fi
           if [[ "${REF}" =~ "stage" ]]; then
-            DEPLOY_ENV=("stage")
+            DEPLOY_ENV=(stage)
             echo "Current ENV : stage"
           fi
           if [[ "${REF}" =~ "local" ]]; then
-            DEPLOY_ENV=("local")
+            DEPLOY_ENV=(local)
             echo "Current ENV : local"
           fi
           if [[ "${REF}" =~ "prod" ]]; then
-            DEPLOY_ENV=("prod")
+            DEPLOY_ENV=(prod)
             echo "Current ENV : prod"
           fi
           if [[ "${REF}" =~ "all2" ]]; then
-            DEPLOY_ENV=("qa2", "stage")
+            DEPLOY_ENV=(qa2 stage)
             ALL=true
             echo "check_all=$( echo "${ALL}" )" >> $GITHUB_OUTPUT
             echo "Current ENV : all2 - qa2, stage"
           elif [[ "${REF}" =~ "all" ]]; then
-            DEPLOY_ENV=("qa", "stage")
+            DEPLOY_ENV=(qa stage)
             ALL=true
             echo "check_all=$( echo "${ALL}" )" >> $GITHUB_OUTPUT
             echo "Current ENV : all - qa, stage"

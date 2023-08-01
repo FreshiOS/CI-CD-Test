@@ -30,7 +30,7 @@ jobs:
     needs: [resolve_environment, consecutiveness]
     strategy:
       matrix:
-        environment: ${{ fromJson(toJson(needs.resolve_environment.outputs.scheme_list)) }}
+        environment: ${{ needs.resolve_environment.outputs.scheme_list }}
     environment:
       name: ${{ matrix.environment }}
     runs-on: self-hosted
