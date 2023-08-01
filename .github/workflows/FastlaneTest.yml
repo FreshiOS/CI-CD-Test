@@ -2,6 +2,8 @@ name: FastlaneTest
 on:
   push:
     tags:
+      - 'qa'
+      - 'stage'
 
 jobs:
   fastlane-action:
