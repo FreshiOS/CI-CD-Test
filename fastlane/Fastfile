@@ -42,12 +42,13 @@ lane :flight do
 
   isLastBuildNumber = true
   if ENV["ALL"] == "true"
-    scheme_list = ENV["SCHEME_LIST"]
+    scheme_list = ENV["SCHEME_LIST"].split(",")
     puts ENV["SCHEME_LIST"]
     puts ENV["SCHEME"]
     scheme = ENV["SCHEME"].split("-")[1]&.downcase || ""
-    idx = scheme_list.index(scheme) || 0
+    idx = scheme_list.index(scheme_list&.find { |e| e =~ /[:scheme:]/ } || "") || 0
     current_build_number += idx
+    puts idx
 
     if idx + 1 < scheme_list.size
       isLastBuildNumber = false
