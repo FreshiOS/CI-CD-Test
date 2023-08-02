@@ -1,8 +1,10 @@
 default_platform(:ios)
 
 lane :printTest do
-  puts "Scheme_List: #{ENV["SCHEME_LIST"]}"
-  puts "Scheme: #{ENV["SCHEME"]}"
+  scheme_list = ENV["SCHEME_LIST"]
+  scheme = ENV["SCHEME"]
+  puts "Scheme_List: #{scheme_list}"
+  puts "Scheme: #{scheme}"
 end
 
 lane :flight do

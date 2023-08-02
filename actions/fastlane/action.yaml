@@ -90,7 +90,7 @@ runs:
       run: |
         fastlane run get_build_number >> number.txt
         text=`cat number.txt`
-        NUMBER=`echo "${text#*Result:}" | sed -e 's/^"//' -e 's/"$//' | tr -d ' '| sed 's/[^0-9]//g' | rev | cut -c 2- | rev`
+        NUMBER=`echo "${text#*Result:}" | sed '/Result/ s/[^0-9]//g' | sed -n '1p' | tr -d ' '`
         echo "Number :$NUMBER"
         echo "build_number=$(echo $NUMBER)" >> $GITHUB_OUTPUT
     - name: delete keychain
