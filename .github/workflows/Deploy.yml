@@ -64,15 +64,31 @@ jobs:
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
           ALL: ${{ needs.resolve_environment.outputs.check_all }}
 
-  deploy-all:
+  matrix-setting:
     needs: [resolve_environment, consecutiveness]
     if: needs.resolve_environment.outputs.check_all == 'true'
+    runs-on: self-hosted
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - id: set-matrix
+        run: |
+          MATRIX=(qa)
+          TAG=${{needs.resolve_environment.outputs.deploy_env}}
+
+          if [[ "${TAG}" == "all2" ]]; then
+            MATRIX=(qa stage)
+          fi
+
+          echo "matrix=$( echo "${MATRIX}" )" >> $GITHUB_OUTPUT
+
+  deploy-all:
+    needs: matrix-setting
     strategy:
       matrix:
-        environment:
-          - 'stage'
-        include:
-          - environment: ${{ needs.resolve_environment.outputs.deploy_env == 'all2' && 'qa2' || 'qa' }}
+        environment: ${{ fromJson(needs.matrix-setting.outputs.matrix) }}
       fail-fast: false
       max-parallel: 7
     environment:
@@ -104,6 +120,6 @@ jobs:
           XC_SCHEME: ${{ secrets.XC_SCHEME }}
           TAG: ${{ github.ref_name }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-          SCHEME_LIST: ${{ strategy.matrix.environment }}
+          SCHEME_LIST: ${{ needs.matrix-setting.outputs.matrix }}
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
           ALL: ${{ needs.resolve_environment.outputs.check_all }}
