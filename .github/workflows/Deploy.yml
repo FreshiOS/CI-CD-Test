@@ -73,6 +73,8 @@ jobs:
           - 'stage'
         include:
           - environment: ${{ needs.resolve_environment.outputs.deploy_env == 'all2' && 'qa2' || 'qa' }}
+        fail-fast: false
+        max-parallel: 7
     environment:
       name: ${{ matrix.environment }}
     runs-on: self-hosted
