@@ -70,6 +70,20 @@ runs:
         UPLOAD_URL: ${{ inputs.UPLOAD_URL }}
         SCHEME_LIST: ${{ inputs.SCHEME_LIST }}
         BUILD_NUMBER: ${{ inputs.BUILD_NUMBER }}
+    - name: print scheme info
+      shell: bash
+      run: |
+        fastlane printTest >> result.txt
+        text=`cat result.txt`
+        Scheme_List=`echo "${text#*Scheme_List:}" | sed -e 's/^"//' -e 's/"$//' | tr -d ' '| sed 's/[^0-9]//g' | rev | cut -c 2- | rev`
+        Scheme=`echo "${text#*Scheme:}" | sed -e 's/^"//' -e 's/"$//' | tr -d ' '| sed 's/[^0-9]//g' | rev | cut -c 2- | rev`
+        Target=`echo "${text#*Target:}" | sed -e 's/^"//' -e 's/"$//' | tr -d ' '| sed 's/[^0-9]//g' | rev | cut -c 2- | rev`
+        Index=`echo "${text#*Index:}" | sed -e 's/^"//' -e 's/"$//' | tr -d ' '| sed 's/[^0-9]//g' | rev | cut -c 2- | rev`
+
+        echo "Scheme_List :$Scheme_List"
+        echo "Scheme :$Scheme"
+        echo "Target :$Target"
+        echo "Index :$Index"
     - name: get build number
       id: number
       shell: bash
