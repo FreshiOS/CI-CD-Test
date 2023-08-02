@@ -70,7 +70,7 @@ runs:
             DEPLOY_ENV=prod
             echo "Current ENV : prod"
           elif [[ "${REF}" =~ "all" ]]; then
-            DEPLOY_ENV=`"${REF}" cut -d "/" -f 2`
+            DEPLOY_ENV=$(echo ${REF} | cut -d "/" -f 2)
             ALL=true
             echo "check_all=$( echo "${ALL}" )" >> $GITHUB_OUTPUT
             echo "Current ENV : all"
