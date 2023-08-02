@@ -9,10 +9,11 @@ lane :printTest do
   # scheme = first_scheme&.downcase || ""
 
   splitted_list = ENV["SCHEME_LIST"]&.split(",") || []
-  # idx = splitted_list&.index(splitted_list&.find { |e| e =~ /[:scheme:]/ } || "") || 0
+  idx = splitted_list&.index(splitted_list&.find { |e| e =~ "stage" } || "") || 0
 
   puts "Splitted_List: #{splitted_list}"
   puts "Splitted_Scheme: #{splitted_scheme}"
+  puts "Index: #{idx}"
   puts "Scheme_List: #{scheme_list}"
   puts "Scheme: #{scheme}"
 end
@@ -56,7 +57,7 @@ lane :flight do
     puts ENV["SCHEME_LIST"]
     puts ENV["SCHEME"]
     scheme = ENV["SCHEME"].split("-")[1]&.downcase || ""
-    idx = scheme_list.index(scheme_list&.find { |e| e =~ /[:scheme:]/ } || "") || 0
+    idx = splitted_list&.index(splitted_list&.find { |e| e =~ /[:scheme:]/ } || "") || 0
     current_build_number += idx
     puts idx
 

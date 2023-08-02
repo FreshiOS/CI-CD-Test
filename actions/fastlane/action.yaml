@@ -84,11 +84,13 @@ runs:
         Splitted_Scheme=`echo "${text#*Splitted_Scheme: }" | sed '/Splitted_Scheme/ s///' | sed -n '1p'`
         Scheme_List=`echo "${text#*Scheme_List: }" | sed '/Scheme_List/ s///' | sed -n '1p'`
         Scheme=`echo "${text#*Scheme: }" | sed '/Scheme/ s///' | sed -n '1p'`
+        Index=`echo "${text#*Index: }" | sed '/Index/ s///' | sed -n '1p'`
         
         echo "Splitted_List: $Splitted_List"
         echo "Splitted_Scheme: $Splitted_Scheme"
         echo "Scheme_List: $Scheme_List"
         echo "Scheme: $Scheme"
+        echo "Index: $Index"
     - name: get build number
       id: number
       shell: bash
