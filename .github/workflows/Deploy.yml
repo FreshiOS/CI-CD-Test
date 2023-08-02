@@ -70,9 +70,9 @@ jobs:
     strategy:
       matrix:
         environment:
-          - "stage"
+          - 'stage'
         include:
-          - environment: ${{ needs.resolve_environment.outputs.deploy_env == 'all2' && "qa2" || "qa" }}
+          - environment: ${{ needs.resolve_environment.outputs.deploy_env == 'all2' && 'qa2' || 'qa' }}
     environment:
       name: ${{ matrix.environment }}
     runs-on: self-hosted
