@@ -72,6 +72,10 @@ runs:
         BUILD_NUMBER: ${{ inputs.BUILD_NUMBER }}
     - name: print scheme info
       shell: bash
+      env:
+        DEVELOPER_APP_IDENTIFIER: ${{ inputs.DEVELOPER_APP_IDENTIFIER }}
+        SCHEME_LIST: ${{ inputs.SCHEME_LIST }}
+        SCHEME: ${{ inputs.XC_SCHEME }}
       run: |
         fastlane printTest >> result.txt
         text=`cat result.txt`
