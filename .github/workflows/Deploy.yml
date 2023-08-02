@@ -66,7 +66,8 @@ jobs:
 
   deploy-all:
     needs: [resolve_environment, consecutiveness]
-    if: needs.resolve_environment.needs.check_all == 'true'
+#    if: needs.resolve_environment.needs.check_all == 'true'
+    if: always()
     strategy:
       matrix:
         environment:
