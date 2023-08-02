@@ -71,19 +71,19 @@ jobs:
       outputs:
         matrix: ${{ steps.set-matrix.outputs.matrix }}
       steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - id: set-matrix
-        shell: bash
-        run: |
-          TAG=${{needs.resolve_environment.outputs.deploy_env}}
-          MATRIX=["qa", "stage"]
+        - name: checkout
+          uses: actions/checkout@v3
+        - id: set-matrix
+          shell: bash
+          run: |
+            TAG=${{needs.resolve_environment.outputs.deploy_env}}
+            MATRIX=["qa", "stage"]
 
-          if [[ "${TAG}" == "all2" ]]; then
-            MATRIX=["qa2", "stage"]
-          fi
+            if [[ "${TAG}" == "all2" ]]; then
+              MATRIX=["qa2", "stage"]
+            fi
 
-          echo "matrix=$( echo "${MATRIX}" )" >> $GITHUB_OUTPUT
+            echo "matrix=$( echo "${MATRIX}" )" >> $GITHUB_OUTPUT
 
   deploy-all:
     needs: matrix-prep
