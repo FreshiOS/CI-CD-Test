@@ -1,14 +1,8 @@
 default_platform(:ios)
 
 lane :printTest do
-  scheme_list = ENV["SCHEME_LIST"]
-  scheme = ENV["SCHEME"]&.split("-")[1]&.downcase || ""
-  idx = scheme_list.index(scheme) || 0
-
   puts "Scheme_List: #{ENV["SCHEME_LIST"]}"
   puts "Scheme: #{ENV["SCHEME"]}"
-  puts "Target: #{scheme}"
-  puts "Index: #{idx}"
 end
 
 lane :flight do
