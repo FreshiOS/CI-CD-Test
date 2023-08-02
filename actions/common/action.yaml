@@ -73,7 +73,8 @@ runs:
             DEPLOY_ENV=$(echo ${REF} | cut -d "/" -f 2)
             ALL=true
             echo "check_all=$( echo "${ALL}" )" >> $GITHUB_OUTPUT
-            echo "Current ENV : all"
+            echo "Current ENV : ${DEPLOY_ENV}"
+            echo "All State : ${ALL}"
           fi
         fi
         echo "deploy_env=$( echo "${DEPLOY_ENV}" )" >> $GITHUB_OUTPUT
