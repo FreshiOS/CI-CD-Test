@@ -64,7 +64,7 @@ jobs:
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
           ALL: ${{ needs.resolve_environment.outputs.check_all }}
 
-    matrix_prep:
+    matrix-prep:
       needs: [resolve_environment, consecutiveness]
       if: needs.resolve_environment.needs.check_all == 'true'
       runs-on: self-hosted
@@ -74,6 +74,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - id: set-matrix
+        shell: bash
         run: |
           TAG=${{needs.resolve_environment.outputs.deploy_env}}
           MATRIX=["qa", "stage"]
@@ -85,11 +86,11 @@ jobs:
           echo "matrix=$( echo "${MATRIX}" )" >> $GITHUB_OUTPUT
 
   deploy-all:
-    needs: matrix_prep
+    needs: matrix-prep
     runs-on: self-hosted
     strategy:
       matrix:
-        environment: ${{ fromJson(needs.matrix_prep.outputs.matrix) }}
+        environment: ${{ fromJson(needs.matrix-prep.outputs.matrix) }}
     environment:
       name: ${{ matrix.environment }}
     outputs:
@@ -118,6 +119,6 @@ jobs:
           XC_SCHEME: ${{ secrets.XC_SCHEME }}
           TAG: ${{ github.ref_name }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-          SCHEME_LIST: ${{ needs.resolve_environment.outputs.scheme_list }}
+          SCHEME_LIST: ${{ needs.matrix-prep.outputs.matrix }}
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
           ALL: ${{ needs.resolve_environment.outputs.check_all }}
