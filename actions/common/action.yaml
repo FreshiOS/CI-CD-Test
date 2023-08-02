@@ -69,7 +69,6 @@ runs:
           if [[ "${REF}" =~ "prod" ]]; then
             DEPLOY_ENV=prod
             echo "Current ENV : prod"
-          fi
           elif [[ "${REF}" =~ "all" ]]; then
             DEPLOY_ENV=`${RC_TAG} cut -d "/" -f 2`
             ALL=true
