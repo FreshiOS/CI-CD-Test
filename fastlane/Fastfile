@@ -5,14 +5,14 @@ lane :printTest do
   scheme = ENV["SCHEME"]
 
   splitted_scheme = ENV["SCHEME"]&.split("-") || []
-  first_scheme = splitted_scheme&[1] || ""
-  scheme = first_scheme&.downcase || ""
+  # first_scheme = splitted_scheme&[1] || ""
+  # scheme = first_scheme&.downcase || ""
 
   splitted_list = ENV["SCHEME_LIST"]&.split(",") || []
-  idx = splitted_list&.index(splitted_list&.find { |e| e =~ /[:scheme:]/ } || "") || 0
+  # idx = splitted_list&.index(splitted_list&.find { |e| e =~ /[:scheme:]/ } || "") || 0
 
   puts "Splitted_List: #{splitted_list}"
-  puts "Index: #{idx}"
+  puts "Splitted_Scheme: #{splitted_scheme}"
   puts "Scheme_List: #{scheme_list}"
   puts "Scheme: #{scheme}"
 end
