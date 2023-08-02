@@ -79,11 +79,11 @@ runs:
       run: |
         fastlane printTest >> result.txt
         text=`cat result.txt`
-        Scheme_List=`echo "${text#*Scheme_List:}" | sed -e 's/^"//' -e 's/"$//' | tr -d ' '| sed 's/[^0-9]//g' | rev | cut -c 2- | rev`
-        Scheme=`echo "${text#*Scheme:}" | sed -e 's/^"//' -e 's/"$//' | tr -d ' '| sed 's/[^0-9]//g' | rev | cut -c 2- | rev`
+        Scheme_List=`echo "${text#*Scheme_List: }" | sed '/Scheme_List/ s///' | sed -n '1p'`
+        Scheme=`echo "${text#*Scheme: }" | sed '/Scheme/ s///' | sed -n '1p'`
 
-        echo "Scheme_List :$Scheme_List"
-        echo "Scheme :$Scheme"
+        echo "Scheme_List: $Scheme_List"
+        echo "Scheme: $Scheme"
     - name: get build number
       id: number
       shell: bash

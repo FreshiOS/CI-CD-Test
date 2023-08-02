@@ -28,7 +28,7 @@ jobs:
 
   deploy:
     needs: [resolve_environment, consecutiveness]
-    if: needs.resolve_environment.needs.check_all == 'false'
+    if: needs.resolve_environment.outputs.check_all == 'false'
     strategy:
       matrix:
         environment: [ "${{ needs.resolve_environment.outputs.deploy_env }}" ]
@@ -66,8 +66,7 @@ jobs:
 
   deploy-all:
     needs: [resolve_environment, consecutiveness]
-#    if: needs.resolve_environment.needs.check_all == 'true'
-    if: always()
+    if: needs.resolve_environment.outputs.check_all == 'true'
     strategy:
       matrix:
         environment:
