@@ -75,20 +75,19 @@ jobs:
         uses: actions/checkout@v3
       - id: set-matrix
         run: |
-          MATRIX=( qa stage )
+          echo "matrix=[\"qa\",\"stage\"]" >> $GITHUB_OUTPUT
+
           TAG=${{needs.resolve_environment.outputs.deploy_env}}
 
           if [[ "${TAG}" == "all2" ]]; then
-            MATRIX=( qa2 stage )
+            echo "matrix=[\"qa2\",\"stage\"]" >> $GITHUB_OUTPUT
           fi
-
-          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
 
   deploy-all:
     needs: matrix-setting
     strategy:
       matrix:
-        environment: ${{ join(needs.matrix-setting.outputs.matrix, ', ') }}
+        environment: ${{ fromJson(needs.matrix-setting.outputs.matrix) }}
       fail-fast: false
       max-parallel: 7
     environment:
@@ -120,6 +119,6 @@ jobs:
           XC_SCHEME: ${{ secrets.XC_SCHEME }}
           TAG: ${{ github.ref_name }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-          SCHEME_LIST: ${{ join(needs.matrix-setting.outputs.matrix, ', ') }}
+          SCHEME_LIST: ${{ fromJson(needs.matrix-setting.outputs.matrix) }}
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
           ALL: ${{ needs.resolve_environment.outputs.check_all }}
