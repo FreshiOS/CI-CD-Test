@@ -58,7 +58,7 @@ lane :flight do
     scheme_list = ENV["SCHEME_LIST"]&.split(/[^a-z]+/) || []
     scheme_list.shift
     scheme = ENV["SCHEME"].split("-")[1]&.downcase || ""
-    idx = splitted_list&.index(scheme) || 0
+    idx = scheme_list&.index(scheme) || 0
     current_build_number += idx
 
     if idx + 1 < scheme_list.size
