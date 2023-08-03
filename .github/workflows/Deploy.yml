@@ -62,7 +62,6 @@ jobs:
           TAG: ${{ github.ref_name }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
           BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
-          ALL: ${{ needs.resolve_environment.outputs.check_all }}
 
   matrix-setting:
     needs: [resolve_environment, consecutiveness]
@@ -122,4 +121,4 @@ jobs:
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
           SCHEME_LIST: ${{ needs.matrix-setting.outputs.matrix }}
           BUILD_NUMBER: ${{ needs.matrix-setting.outputs.build_number }}
-          ALL: ${{ needs.resolve_environment.outputs.check_all }}
+          ALL: "true"
