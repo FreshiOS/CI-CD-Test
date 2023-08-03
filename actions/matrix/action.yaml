@@ -9,17 +9,14 @@ inputs:
 outputs:
   matrix:
     description: 'Get scheme list'
-    value: ${{ steps.set-values.outputs.matrix }}
-  build_number:
-    description: 'Get build number'
-    value: ${{ vars.BUILD_NUMBER }}
+    value: ${{ steps.set-value.outputs.matrix }}
 
 runs:
-  runs-on: self-hosted
+  using: "composite"
   steps:
-    - name: checkout
-      uses: actions/checkout@v3
-    - id: set-matrix
+    - name: Set Matrix
+      id: set-value
+      shell: bash
       run: |
         echo "matrix=[\"qa\",\"stage\"]" >> $GITHUB_OUTPUT
 
