@@ -107,6 +107,6 @@ jobs:
           XC_SCHEME: ${{ secrets.XC_SCHEME }}
           TAG: ${{ github.ref_name }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-          SCHEME_LIST: ${{ (needs.resolve_environment.outputs.scheme_list }}
+          SCHEME_LIST: ${{ needs.resolve_environment.outputs.scheme_list }}
           BUILD_NUMBER: ${{ needs.resolve_environment.outputs.build_number }}
           ALL: "true"
