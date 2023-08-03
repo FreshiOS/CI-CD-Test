@@ -99,7 +99,7 @@ lane :flight do
   #   wait_processing_timeout_duration: 3000
   # )
 
-  if isLastBuildNumber = true
+  if isLastBuildNumber == true
     github_api(
       server_url: "https://api.github.com",
       path: "/repos/FreshiOS/CI-CD-Test/actions/variables/BUILD_NUMBER",
