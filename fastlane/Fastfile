@@ -8,8 +8,9 @@ lane :printTest do
   # first_scheme = splitted_scheme&[1] || ""
   # scheme = first_scheme&.downcase || ""
 
-  splitted_list = ENV["SCHEME_LIST"]&.split(",") || []
-  idx = splitted_list&.index(splitted_list&.find { |e| e =~ "stage" } || "") || 0
+  splitted_list = ENV["SCHEME_LIST"]&.split(/[^a-z]+/) || []
+  splitted_list.shift
+  idx = splitted_list&.index("stage") || 0
 
   puts "Splitted_List: #{splitted_list}"
   puts "Splitted_Scheme: #{splitted_scheme}"
@@ -53,11 +54,12 @@ lane :flight do
 
   isLastBuildNumber = true
   if ENV["ALL"] == "true"
-    scheme_list = ENV["SCHEME_LIST"].split(",")
+    scheme_list = ENV["SCHEME_LIST"]&.split(/[^a-z]+/) || []
+    scheme_list.shift
     puts ENV["SCHEME_LIST"]
     puts ENV["SCHEME"]
     scheme = ENV["SCHEME"].split("-")[1]&.downcase || ""
-    idx = splitted_list&.index(splitted_list&.find { |e| e =~ /[:scheme:]/ } || "") || 0
+    idx = splitted_list&.index(scheme) || 0
     current_build_number += idx
     puts idx
 
