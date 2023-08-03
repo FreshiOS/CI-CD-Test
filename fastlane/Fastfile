@@ -67,7 +67,7 @@ lane :flight do
 
     changelog += "\nScheme_List: #{scheme_list}\nIndex: #{idx}\nisLastBuildNumber: #{isLastBuildNumber}"
 
-    release_tag_name[/all[\d]?/] = scheme
+    release_tag_name[/all[\d]?/] = scheme&.upcase || "#{idx}"
   end
 
   increment_build_number(

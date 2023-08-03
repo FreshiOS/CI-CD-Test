@@ -14,3 +14,11 @@ jobs:
         if: always()
         run: |
           security delete-keychain TestApp-Stage.keychain
+      - shell: bash
+        if: always()
+        run: |
+          security delete-keychain TestApp-QA2.keychain
+      - shell: bash
+        if: always()
+        run: |
+          security delete-keychain TestApp-Prod.keychain
