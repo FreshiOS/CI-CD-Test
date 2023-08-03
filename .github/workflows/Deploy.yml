@@ -70,6 +70,7 @@ jobs:
     runs-on: self-hosted
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      build_number: ${{ vars.BUILD_NUMBER }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -120,5 +121,5 @@ jobs:
           TAG: ${{ github.ref_name }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
           SCHEME_LIST: ${{ needs.matrix-setting.outputs.matrix }}
-          BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
+          BUILD_NUMBER: ${{ needs.matrix-setting.outputs.build_number }}
           ALL: ${{ needs.resolve_environment.outputs.check_all }}

@@ -51,23 +51,23 @@ lane :flight do
   end
 
   release_tag_name = "#{ENV["TAG"]}"
+  changelog = "[#{ENV["SCHEME"]}] #{ENV["TAG"]} "
 
   isLastBuildNumber = true
   if ENV["ALL"] == "true"
     scheme_list = ENV["SCHEME_LIST"]&.split(/[^a-z]+/) || []
     scheme_list.shift
-    puts ENV["SCHEME_LIST"]
-    puts ENV["SCHEME"]
     scheme = ENV["SCHEME"].split("-")[1]&.downcase || ""
     idx = splitted_list&.index(scheme) || 0
     current_build_number += idx
-    puts idx
 
     if idx + 1 < scheme_list.size
       isLastBuildNumber = false
     end
 
-    release_tag_name["all"] = ENV["SCHEME"].split("-")[1]&.upcase || ""
+    changelog += "\nScheme_List: #{scheme_list}\nIndex: #{idx}\nisLastBuildNumber: #{isLastBuildNumber}"
+
+    release_tag_name[/all[\d]?/] = scheme
   end
 
   increment_build_number(
@@ -109,12 +109,11 @@ lane :flight do
     )
   end
 
-  # github_release = set_github_release(
-  #   repository_name: "FreshiOS/CI-CD-Test",
-  #   name: "#{release_tag_name} (#{current_build_number})",
-  #   api_token: ENV["GIT_TOKEN"],
-  #   tag_name: release_tag_name,
-  #   description: changelog,
-  #   upload_assets: ["../Archives/"]
-  #  )
+  github_release = set_github_release(
+    repository_name: "FreshiOS/CI-CD-Test",
+    name: "#{release_tag_name} (#{current_build_number})",
+    api_token: ENV["GIT_TOKEN"],
+    tag_name: release_tag_name,
+    description: changelog,
+   )
 end
