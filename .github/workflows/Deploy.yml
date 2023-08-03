@@ -10,6 +10,8 @@ jobs:
     outputs:
       deploy_env: ${{ steps.envs.outputs.deploy_env }}
       check_all:  ${{ steps.envs.outputs.check_all }}
+      scheme_list: ${{ steps.matrix.outputs.matrix }}
+      build_number: ${{ steps.matrix.outputs.build_number }}
     steps:
     - uses: actions/checkout@v3
     - name: set envs
@@ -18,6 +20,11 @@ jobs:
       with:
         current_branch: ${{ github.ref_name }}
         type: ${{ github.ref_type }}
+    - name: set matrix
+      id: matrix
+      uses: ./actions/matrix
+      with:
+        tag: ${{ steps.envs.outputs.deploy_env }}
 
   consecutiveness:
     runs-on: self-hosted
@@ -61,33 +68,14 @@ jobs:
           XC_SCHEME: ${{ secrets.XC_SCHEME }}
           TAG: ${{ github.ref_name }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-          BUILD_NUMBER: ${{ vars.BUILD_NUMBER }}
-
-  matrix-setting:
-    needs: [resolve_environment, consecutiveness]
-    if: needs.resolve_environment.outputs.check_all == 'true'
-    runs-on: self-hosted
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-      build_number: ${{ vars.BUILD_NUMBER }}
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - id: set-matrix
-        run: |
-          echo "matrix=[\"qa\",\"stage\"]" >> $GITHUB_OUTPUT
-
-          TAG=${{needs.resolve_environment.outputs.deploy_env}}
-
-          if [[ "${TAG}" == "all2" ]]; then
-            echo "matrix=[\"qa2\",\"stage\"]" >> $GITHUB_OUTPUT
-          fi
+          BUILD_NUMBER: ${{ needs.resolve_environment.outputs.build_number }}
 
   deploy-all:
-    needs: matrix-setting
+    needs: [resolve_environment, consecutiveness]
+    if: needs.resolve_environment.outputs.check_all == 'true'
     strategy:
       matrix:
-        environment: ${{ fromJson(needs.matrix-setting.outputs.matrix) }}
+        environment: ${{ fromJson(needs.resolve_environment.outputs.scheme_list) }}
       fail-fast: false
       max-parallel: 7
     environment:
@@ -119,6 +107,6 @@ jobs:
           XC_SCHEME: ${{ secrets.XC_SCHEME }}
           TAG: ${{ github.ref_name }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-          SCHEME_LIST: ${{ needs.matrix-setting.outputs.matrix }}
-          BUILD_NUMBER: ${{ needs.matrix-setting.outputs.build_number }}
+          SCHEME_LIST: ${{ (needs.resolve_environment.outputs.scheme_list }}
+          BUILD_NUMBER: ${{ needs.resolve_environment.outputs.build_number }}
           ALL: "true"

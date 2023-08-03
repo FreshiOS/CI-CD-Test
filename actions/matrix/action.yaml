@@ -1,0 +1,30 @@
+name: Set GX Mobile ios configure matrix
+author: Sello
+description: 'Get scheme list from tag'
+inputs:
+  tag:
+    description: 'tag'
+    required: true
+    default: ''
+outputs:
+  matrix:
+    description: 'Get scheme list'
+    value: ${{ steps.set-values.outputs.matrix }}
+  build_number:
+    description: 'Get build number'
+    value: ${{ vars.BUILD_NUMBER }}
+
+runs:
+  runs-on: self-hosted
+  steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - id: set-matrix
+      run: |
+        echo "matrix=[\"qa\",\"stage\"]" >> $GITHUB_OUTPUT
+
+        TAG=${{inputs.tag}}
+
+        if [[ "${TAG}" == "all2" ]]; then
+          echo "matrix=[\"qa2\",\"stage\"]" >> $GITHUB_OUTPUT
+        fi
