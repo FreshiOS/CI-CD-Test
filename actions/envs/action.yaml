@@ -1,8 +1,0 @@
-name: Check Build Number
-description: 'Compare Build Number Git Sercret with App Store Connect'
-inputs:
-  BUILD_NUMBER:
-    decription: 'Enter BUILD_NUMBER'
-    required: true
-    defauilt: '1'
-

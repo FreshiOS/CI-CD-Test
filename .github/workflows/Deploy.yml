@@ -14,6 +14,13 @@ jobs:
       build_number: ${{ vars.BUILD_NUMBER }}
     steps:
     - uses: actions/checkout@v3
+    - name: fetch actions repo
+      uses: actions/checkout@v3
+      with:
+        repository: "FreshiOS/StepCount"
+        path: ./actions
+        token: ${{ secrets.GIT_TOKEN }}
+        ref: "cicd-test"
     - name: set envs
       id: envs
       uses: ./actions/common
@@ -47,6 +54,13 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      - name: fetch actions repo
+        uses: actions/checkout@v3
+        with:
+          repository: "FreshiOS/StepCount"
+         path: ./actions
+          token: ${{ secrets.GIT_TOKEN }}
+          ref: "cicd-test"
       - name: configure
         uses: ./actions/configure
         with:
@@ -86,6 +100,13 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      - name: fetch actions repo
+        uses: actions/checkout@v3
+        with:
+          repository: "FreshiOS/StepCount"
+          path: ./actions
+          token: ${{ secrets.GIT_TOKEN }}
+          ref: "cicd-test"
       - name: configure
         uses: ./actions/configure
         with:
