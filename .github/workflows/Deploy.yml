@@ -148,7 +148,7 @@ jobs:
           token: ${{ secrets.GIT_TOKEN }}
           ref: "cicd-test"
           sparse-checkout: actions
-    - name: notify (Success deploy job)
+      - name: notify (Success deploy job)
         if: |
           ( needs.deploy.result == 'success' )
         uses: ./gx_actions/actions/slack/success
