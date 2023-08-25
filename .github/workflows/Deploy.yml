@@ -46,10 +46,10 @@ jobs:
     if: needs.resolve_environment.outputs.check_all == 'false'
     strategy:
       matrix:
-        environment: [ "${{ needs.resolve_environment.outputs.deploy_env }}" ]
+        environment: ["${{ needs.resolve_environment.outputs.deploy_env }}"]
     environment:
       name: ${{ matrix.environment }}
-    runs-on: ubuntu-22.04
+    runs-on: macos-13
     outputs:
       build_number: ${{ steps.get_number.outputs.build_number }}
     steps:
