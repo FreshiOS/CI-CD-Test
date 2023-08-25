@@ -6,7 +6,7 @@ on:
 
 jobs:
   resolve_environment:
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
     outputs:
       deploy_env: ${{ steps.envs.outputs.deploy_env }}
       check_all:  ${{ steps.envs.outputs.check_all }}
@@ -35,7 +35,7 @@ jobs:
         tag: ${{ steps.envs.outputs.deploy_env }}
 
   consecutiveness:
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
     steps:
     - uses: mktcode/consecutive-workflow-action@e2e008186aa210faacd68ec30f6ac236f7e2f435
       with:
@@ -49,7 +49,7 @@ jobs:
         environment: [ "${{ needs.resolve_environment.outputs.deploy_env }}" ]
     environment:
       name: ${{ matrix.environment }}
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
     outputs:
       build_number: ${{ steps.get_number.outputs.build_number }}
     steps:
@@ -96,9 +96,7 @@ jobs:
       max-parallel: 7
     environment:
       name: ${{ matrix.environment }}
-    runs-on: self-hosted
-    outputs:
-      build_number: ${{ steps.get_number.outputs.build_number }}
+    runs-on: macos-13
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -134,3 +132,45 @@ jobs:
           SCHEME_LIST: ${{ needs.resolve_environment.outputs.scheme_list }}
           BUILD_NUMBER: ${{ needs.resolve_environment.outputs.build_number }}
           ALL: "true"
+
+  slack:
+    runs-on: ubuntu-22.04
+    needs: [ deploy, deploy-all ]
+    if: always()
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: fetch actions repo
+        uses: actions/checkout@v3
+        with:
+          repository: "FreshiOS/StepCount"
+          path: gx_actions
+          token: ${{ secrets.GIT_TOKEN }}
+          ref: "cicd-test"
+          sparse-checkout: actions
+    - name: notify (Success deploy job)
+        if: |
+          ( needs.deploy.result == 'success' )
+        uses: ./gx_actions/actions/slack/success
+        with:
+          slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+          build_number: ${{ needs.deploy.outputs.build_number }}
+      - name: notify (Failure deploy job)
+        if: |
+          ( needs.deploy.result == 'failure' )
+        uses: ./gx_actions/actions/slack/failure
+        with:
+          slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+          build_number: ${{ needs.deploy.outputs.build_number }}
+      - name: notify (Success deploy-all job)
+        if: |
+          ( needs.deploy-all.result == 'success' )
+        uses: ./gx_actions/actions/slack/all/success
+        with:
+          slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+      - name: notify (Failure deploy-all job)
+        if: |
+          ( needs.deploy-all.result == 'failure' )
+        uses: ./gx_actions/actions/slack/failure
+        with:
+          slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
