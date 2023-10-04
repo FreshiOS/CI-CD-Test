@@ -74,19 +74,19 @@ lane :flight do
     build_number: current_build_number
   )
 
-  # update_code_signing_settings(
-  #   use_automatic_signing: false,
-  #   code_sign_identity: "Apple Distribution",
-  #   profile_name: "CI-CD-Test-Profile"
-  # )
+  update_code_signing_settings(
+    use_automatic_signing: false,
+    code_sign_identity: "Apple Distribution",
+    profile_name: "CI-CD-Test-Profile"
+  )
 
-  # gym(
-  #   scheme: ENV["SCHEME"],
-  #   export_method: "app-store",
-  #   archive_path: "../Archives/",
-  #   derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
-  #   clean: true
-  # )
+  gym(
+    scheme: ENV["SCHEME"],
+    export_method: "app-store",
+    archive_path: "../Archives/",
+    derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
+    clean: true
+  )
 
   # scheme = ENV["SCHEME"].split("-")[1] || "dev"
   # value = sh("cd ../CI-CD-Test/App/Config && grep 'NOTE = ' #{scheme}.xcconfig")
