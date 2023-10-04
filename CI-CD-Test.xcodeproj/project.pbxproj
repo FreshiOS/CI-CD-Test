@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		038301C529D29F21000E10CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 038301C329D29F21000E10CF /* Main.storyboard */; };
 		038301C729D29F22000E10CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 038301C629D29F22000E10CF /* Assets.xcassets */; };
 		038301CA29D29F22000E10CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 038301C829D29F22000E10CF /* LaunchScreen.storyboard */; };
+		E49BF5E72ACD400C00F003D1 /* SampleLocalSPM in Frameworks */ = {isa = PBXBuildFile; productRef = E49BF5E62ACD400C00F003D1 /* SampleLocalSPM */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E49BF5E72ACD400C00F003D1 /* SampleLocalSPM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +117,9 @@
 			dependencies = (
 			);
 			name = "CI-CD-Test";
+			packageProductDependencies = (
+				E49BF5E62ACD400C00F003D1 /* SampleLocalSPM */,
+			);
 			productName = "CI-CD-Test";
 			productReference = 038301BA29D29F21000E10CF /* CI-CD-Test.app */;
 			productType = "com.apple.product-type.application";
@@ -143,6 +148,9 @@
 				Base,
 			);
 			mainGroup = 038301B129D29F21000E10CF;
+			packageReferences = (
+				E49BF5E52ACD400C00F003D1 /* XCLocalSwiftPackageReference "SampleLocalSPM" */,
+			);
 			productRefGroup = 038301BB29D29F21000E10CF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -897,6 +905,20 @@
 			defaultConfigurationName = Dev;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		E49BF5E52ACD400C00F003D1 /* XCLocalSwiftPackageReference "SampleLocalSPM" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = SampleLocalSPM;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E49BF5E62ACD400C00F003D1 /* SampleLocalSPM */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SampleLocalSPM;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 038301B229D29F21000E10CF /* Project object */;
 }

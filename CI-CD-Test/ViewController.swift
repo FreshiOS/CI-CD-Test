@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import SampleLocalSPM
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        SampleStruct().sayHI()
         // Do any additional setup after loading the view.
     }
 
