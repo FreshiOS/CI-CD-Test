@@ -66,7 +66,7 @@ jobs:
       - name: configure
         uses: ./gx_actions/actions/configure
         with:
-          xcode-version: 14.3.1
+          xcode-version: 15.0
           CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTO_PWD }}
           ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision.gpg' }}
           DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision' }}
@@ -111,7 +111,7 @@ jobs:
       - name: configure
         uses: ./gx_actions/actions/configure
         with:
-          xcode-version: 14.3.1
+          xcode-version: 15.0
           CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTO_PWD }}
           ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision.gpg' }}
           DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision' }}
