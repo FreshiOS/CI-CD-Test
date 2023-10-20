@@ -71,6 +71,9 @@ jobs:
           ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision.gpg' }}
           DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/CI_CD_Test.mobileprovision' }}
           PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROFILES_ENCRYPTO_PWD }}
+          ENCRYPTED_WIDGET_PROVISION_FILE_PATH: ${{ '.github/secrets/CICDTestWidgetProfile.mobileprovision.gpg' }}
+          DECRYPTED_WIDGET_PROVISION_FILE_PATH: ${{ '.github/secrets/CICDTestWidgetProfile.mobileprovision' }}
+          PROVISIONING_WIDGET_ENCRYPTION_KEY: ${{ secrets.WIDGET_PROFILES_ENCRYPTO_PWD }}
           CERT_EXPORT_KEY: ${{ secrets.CERTS_EXPORT_PWD }}
           KEYCHAIN: "${{ secrets.XC_SCHEME }}.keychain"
       - name: fastlane-action
