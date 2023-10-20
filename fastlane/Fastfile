@@ -74,6 +74,11 @@ lane :flight do
     build_number: current_build_number
   )
 
+  update_project_team(
+    path: "CI-CD-Test.xcodeproj",
+    teamid: "JT5962HWNA"
+  )
+
   update_code_signing_settings(
     use_automatic_signing: false,
     code_sign_identity: "Apple Distribution",
