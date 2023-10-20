@@ -100,6 +100,11 @@ lane :flight do
   gym(
     scheme: ENV["SCHEME"],
     export_method: "app-store",
+    export_options: {
+    provisioningProfiles: {
+      "com.test.CI-CD-Test" => "CI-CD-Test-Profile",
+      "com.test.CI-CD-Test.TestWidget" => "CI-CD-Test-Widget-Profile"
+    }
     archive_path: "../Archives/",
     derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
     clean: true
