@@ -38,7 +38,11 @@ lane :flight do
   git_hub_stored_build_number = ENV["BUILD_NUMBER"].to_i
 
   current_build_number = app_store_connect_build_number > git_hub_stored_build_number ? app_store_connect_build_number + 1 : git_hub_stored_build_number + 1
-  version = get_version_number(xcodeproj: "CI-CD-Test.xcodeproj")
+ version = get_version_number(
+    xcodeproj: "CI-CD-Test.xcodeproj",
+    target: "CI-CD-Test"
+  )
+
   newVersion = ENV["TAG"].split('v')[1].split('-')[0].strip
 
   if version != newVersion
@@ -48,6 +52,14 @@ lane :flight do
       target: "CI-CD-Test",
       plist_build_setting_support: true
     )
+
+    increment_version_number_in_plist(
+      version_number: newVersion,
+      xcodeproj: "CI-CD-Test.xcodeproj",
+      target: "TestWidgetExtension",
+      plist_build_setting_support: true
+    )
+
   end
 
   release_tag_name = "#{ENV["TAG"]}"
