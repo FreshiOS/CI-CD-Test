@@ -97,18 +97,19 @@ lane :flight do
     profile_name: "CI-CD-Test-Profile"
   )
 
-  gym(
-    scheme: ENV["SCHEME"],
-    export_method: "app-store",
-    export_options: {
-    provisioningProfiles: {
-      "com.test.CI-CD-Test" => "CI-CD-Test-Profile",
-      "com.test.CI-CD-Test.TestWidget" => "CI-CD-Test-Widget-Profile"
-    }
-    archive_path: "../Archives/",
-    derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
-    clean: true
-  )
+   gym(
+     scheme: ENV["SCHEME"],
+     export_method: "app-store",
+     export_options: {
+      provisioningProfiles: {
+        "com.test.CI-CD-Test" => "CI-CD-Test-Profile",
+        "com.test.CI-CD-Test.TestWidget" => "CI-CD-Test-Widget-Profile"
+       }
+     },
+     archive_path: "../Archives/",
+     derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
+     clean: true
+    )
 
   scheme = ENV["SCHEME"].split("-")[1] || "dev"
   value = sh("cd ../CI-CD-Test/App/Config && grep 'NOTE = ' #{scheme}.xcconfig")
