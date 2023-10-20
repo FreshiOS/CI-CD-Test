@@ -88,16 +88,16 @@ lane :flight do
     clean: true
   )
 
-  # scheme = ENV["SCHEME"].split("-")[1] || "dev"
-  # value = sh("cd ../CI-CD-Test/App/Config && grep 'NOTE = ' #{scheme}.xcconfig")
-  # note = value.split('=')[1]&.strip || ""
-  # changelog = "[#{ENV["SCHEME"]}] #{ENV["TAG"]} \n#{note}"
+  scheme = ENV["SCHEME"].split("-")[1] || "dev"
+  value = sh("cd ../CI-CD-Test/App/Config && grep 'NOTE = ' #{scheme}.xcconfig")
+  note = value.split('=')[1]&.strip || ""
+  changelog = "[#{ENV["SCHEME"]}] #{ENV["TAG"]} \n#{note}"
 
-  # pilot(
-  #   api_key: api_key,
-  #   changelog: changelog,
-  #   wait_processing_timeout_duration: 3000
-  # )
+   pilot(
+     api_key: api_key,
+     changelog: changelog,
+     wait_processing_timeout_duration: 3000
+   )
 
   if isLastBuildNumber == true
     github_api(
