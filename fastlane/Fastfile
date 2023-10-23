@@ -95,6 +95,7 @@ lane :flight do
     use_automatic_signing: false,
     team_id: "JT5962HWNA",
     targets: "CI-CD-Test",
+    bundle_identifier: "com.test.CI-CD-Test",
     code_sign_identity: "Apple Distribution",
     profile_name: "CI-CD-Test-Profile"
   )
@@ -103,8 +104,10 @@ lane :flight do
     use_automatic_signing: false,
     team_id: "JT5962HWNA",
     targets: "TestWidgetExtension",
+    bundle_identifier: "com.test.CI-CD-Test.TestWidget",
     code_sign_identity: "Apple Distribution",
     profile_name: "CI-CD-Test-Widget-Profile",
+    entitlements_file_path: "CI-CD-Test/TestWidgetExtension.entitlements"
    )
 
    gym(
@@ -114,9 +117,11 @@ lane :flight do
      export_team_id: "JT5962HWNA",
      export_xcargs: "-allowProvisioningUpdates",
      export_options: {
-      provisioningProfiles: { "com.test.CI-CD-Test": "CI-CD-Test-Profile" },                                                   
-                            { "com.test.CI-CD-Test.TestWidget": "CI-CD-Test-Widget-Profile" }
-    },
+      provisioningProfiles: {
+        "com.test.CI-CD-Test" => "CI-CD-Test-Profile",
+        "com.test.CI-CD-Test.TestWidget" => "CI-CD-Test-Widget-Profile"
+       }
+     },
      archive_path: "../Archives/",
      derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
      clean: true
