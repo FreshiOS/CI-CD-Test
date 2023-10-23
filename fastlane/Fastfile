@@ -94,7 +94,7 @@ lane :flight do
   update_code_signing_settings(
     use_automatic_signing: false,
     team_id: "JT5962HWNA",
-    targets: "TestWidgetExtension",
+    targets: "CI-CD-Test",
     code_sign_identity: "Apple Distribution",
     profile_name: "CI-CD-Test-Profile"
   )
