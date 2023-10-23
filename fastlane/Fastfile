@@ -102,8 +102,8 @@ lane :flight do
      export_method: "app-store",
      export_options: {
       provisioningProfiles: {
-        "com.test.CI-CD-Test" => "CI-CD-Test-Profile",
-        "com.test.CI-CD-Test.TestWidget" => "CI-CD-Test-Widget-Profile"
+        "com.test.CI-CD-Test" => "CI_CD_Test.mobileprovision",
+        "com.test.CI-CD-Test.TestWidget" => "CICDTestWidgetProfile.mobileprovision"
        }
      },
      archive_path: "../Archives/",
