@@ -20,6 +20,7 @@ lane :printTest do
 end
 
 lane :flight do
+  xcode_select("/Applications/Xcode-15.0.app")
 
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "60"
   ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "6"
