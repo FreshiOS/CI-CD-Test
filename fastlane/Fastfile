@@ -93,27 +93,14 @@ lane :flight do
 
   update_code_signing_settings(
     use_automatic_signing: false,
-    targets: "CI-CD-Test",
+    targets: ["CI-CD-Test", TestWidgetExtension"],
     code_sign_identity: "iPhone Distribution",
     profile_name: "CI-CD-Test-Profile"
   )
 
-  # update_code_signing_settings(
-    # use_automatic_signing: false,
-    # targets: "TestWidgetExtension",
-    # code_sign_identity: "iPhone Distribution",
-    # profile_name: "CI-CD-Test-Widget-Profile",
-  # )
-
    gym(
      scheme: ENV["SCHEME"],
      export_method: "app-store",
-     export_options: {
-      provisioningProfiles: {
-        "com.test.CI-CD-Test" => "CI-CD-Test-Profile",
-        # "com.test.CI-CD-Test.TestWidget" => "CI-CD-Test-Widget-Profile"
-       }
-     },
      archive_path: "../Archives/",
      derived_data_path: "../Library/Developer/Xcode/DerivedData/Temp",
      clean: true
