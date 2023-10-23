@@ -105,7 +105,7 @@ lane :flight do
     targets: "TestWidgetExtension",
     code_sign_identity: "Apple Distribution",
     profile_name: "CI-CD-Test-Widget-Profile",
-    entitlements_file_path: "CI-CD-Test/TestWidgetExtension.entitlements"
+    entitlements_file_path: "TestWidgetExtension.entitlements"
    )
 
    gym(
