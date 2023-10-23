@@ -93,7 +93,6 @@ lane :flight do
 
   update_code_signing_settings(
     use_automatic_signing: false,
-    targets: ["CI-CD-Test", TestWidgetExtension"],
     code_sign_identity: "iPhone Distribution",
     profile_name: "CI-CD-Test-Profile"
   )
