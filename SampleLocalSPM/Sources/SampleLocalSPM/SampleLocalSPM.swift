@@ -6,5 +6,6 @@ public struct SampleStruct {
 
     public func sayHI() {
         print("HI")
+        print("why?")
     }
 }
